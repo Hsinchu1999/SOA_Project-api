@@ -5,23 +5,35 @@ require 'roar/json'
 require_relative 'region_representer'
 
 module TravellingSuggestions
-    module Representer
-      # Represent about attraction
-      class Attraction < Roar::decorator
-        include Roar::JSON
-  
-        property :name
-        property :id
-        property :added_time
-        property :region, extend: Representer::Region, clas OpenStruct
-        property :indoor_or_outdoor
-        property :main_activity
-        property :staying_time
-        property :type
-        property :attendants
-        property :notes
-        property :contact
-        property :best_time_to_visit
+  module Representer
+    # Represent about attraction
+    class Attraction < Roar::decorator
+      include Roar::JSON
+      include Roar::hypermedia
+      include Roar::Decorator::HypermediaConsumer
+
+      property :name
+      property :id
+      property :added_time
+      property :region, extend: Representer::Region, class: OpenStruct
+      property :indoor_or_outdoor
+      property :main_activity
+      property :staying_time
+      property :type
+      property :attendants
+      property :notes
+      property :contact
+      property :best_time_to_visit
+
+      link :self do
+        '#{Api.config.API_HOST}/attractions/#{name}/#{city_name}'
+      end
+
+      private
+      
+      def region_name
+        represented.region.city
       end
     end
   end
+end
