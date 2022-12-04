@@ -2,7 +2,8 @@
 
 require 'dry-types'
 require 'dry-struct'
-# require_relative 'region'
+require_relative 'user'
+require_relative '../../attraction/entities/attraction'
 
 module TravellingSuggestions
   module Entity

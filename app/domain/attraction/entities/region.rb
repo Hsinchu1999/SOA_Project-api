@@ -6,7 +6,7 @@ require_relative 'weather'
 
 module TravellingSuggestions
   module Entity
-    # # An Entity object for region
+    # An Entity object for region
     class Region < Dry::Struct
       include Dry.Types
 

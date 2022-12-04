@@ -3,6 +3,10 @@
 source 'https://rubygems.org'
 ruby File.read('.ruby-version').strip
 
+# Presentation layer
+gem 'muti_json'
+gem 'roar'
+
 # Web Application
 gem 'figaro', '~> 1.2'
 gem 'puma', '~> 5'
