@@ -13,7 +13,7 @@ module TravellingSuggestions
           Success(
             Response::ApiResult.new(
               status: :ok,
-              message: :user
+              message: user
             )
           )
         else

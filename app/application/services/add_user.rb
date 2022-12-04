@@ -37,14 +37,14 @@ module TravellingSuggestions
         Success(
           Response::ApiResult.new(
             status: :ok,
-            message: input
+            message: user
           )
         )
       rescue StandardError
         Failure(Response::ApiResult.new(
-          status: :not_found,
-          message: 'Having trouble accessing database'
-        ))
+                  status: :not_found,
+                  message: 'Having trouble accessing database'
+                ))
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TravellingSuggestions
   module Request
     class EncodedNewUserNickname
