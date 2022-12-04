@@ -15,7 +15,7 @@ module TravellingSuggestions
       rescue StandardError
         Failure(
           Reponse::ApiResult.new(
-            status: :bad_request
+            status: :forbidden
             message: 'Invalid nickname'
           )
         )
