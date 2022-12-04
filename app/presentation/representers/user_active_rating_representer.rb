@@ -9,7 +9,7 @@ require_relative 'attraction_representer'
 module TravellingSuggestions
   module Representer
     # Represent about User Active Rating
-    class UserActiveRating < Roar::decorator
+    class UserActiveRating < Roar::Decorator
       include Roar::JSON
       
       collection :favorites_list, extend: Representer::Attraction, class: OpenStruct

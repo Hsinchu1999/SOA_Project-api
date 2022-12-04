@@ -8,7 +8,7 @@ require_relative 'user_favorite_representer'
 module TravellingSuggestions
   module Representer
     # Represent about User
-    class User < Roar::decorator
+    class User < Roar::Decorator
       include Roar::JSON
       
       property :id

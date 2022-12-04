@@ -9,7 +9,7 @@ require_relative 'forecast_36hr_representer'
 module TravellingSuggestions
   module Representer
     # Represent about weather
-    class Weather < Roar::decorator
+    class Weather < Roar::Decorator
       include Roar::JSON
 
       property :forecast_36hr, extend: Representer::Forecast36Hr, class: OpenStruct

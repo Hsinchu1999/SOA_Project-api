@@ -6,7 +6,7 @@ require 'roar/json'
 module TravellingSuggestions
   module Representer
     # Represent about forecast of 12 Hr
-    class ForecastPer12Hr < Roar::decorator
+    class ForecastPer12Hr < Roar::Decorator
       include Roar::JSON
       
       property :pop

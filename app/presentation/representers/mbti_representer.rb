@@ -6,7 +6,7 @@ require 'roar/json'
 module TravellingSuggestions
   module Representer
     # Represent about mbti type
-    class MBTI < Roar::decorator
+    class MBTI < Roar::Decorator
       include Roar::JSON
       
       property :id

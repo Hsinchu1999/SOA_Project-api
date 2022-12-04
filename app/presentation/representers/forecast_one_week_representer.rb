@@ -8,7 +8,7 @@ require_relative 'forecast_per_day_representer'
 module TravellingSuggestions
   module Representer
     # Represent about forecast of 1 week
-    class ForecastOneWeek < Roar::decorator
+    class ForecastOneWeek < Roar::Decorator
       include Roar::JSON
       
       property :day1, extend: Representer::ForecastPerDay, class: OpenStruct

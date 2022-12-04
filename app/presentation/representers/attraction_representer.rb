@@ -7,7 +7,7 @@ require_relative 'region_representer'
 module TravellingSuggestions
   module Representer
     # Represent about attraction
-    class Attraction < Roar::decorator
+    class Attraction < Roar::Decorator
       include Roar::JSON
       include Roar::hypermedia
       include Roar::Decorator::HypermediaConsumer

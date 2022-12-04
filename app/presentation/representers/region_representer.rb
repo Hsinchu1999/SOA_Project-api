@@ -8,7 +8,7 @@ require_relative 'weather_representer'
 module TravellingSuggestions
   module Representer
     # Represent about region
-    class Region < Roar::decorator
+    class Region < Roar::Decorator
       include Roar::JSON
 
       property :country
