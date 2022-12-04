@@ -10,9 +10,18 @@ module TravellingSuggestions
 
       def call(region_id)
         weather = Repository::ForAttraction.klass(Entity::Weather).find_region_id(region_id)
-        Success(weather)
+        Success(
+          Response::ApiResult.new(
+            status: :ok,
+            message: weather
+          )
       rescue StandardError
-        Failure('Could not fetch weather object from database')
+        Failure(
+          Response::ApiResult.new(
+            status: :internal_error,
+            message: 'Could not fetch weather object from database'
+          )
+        )
       end
     end
   end

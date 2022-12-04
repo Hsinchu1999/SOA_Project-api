@@ -10,9 +10,19 @@ module TravellingSuggestions
 
       def call(_input)
         if (user = Repository::ForUser.klass(Entity::User).find_name(nick_name))
-          Success(user)
+          Success(
+            Response::ApiResult.new(
+              status: :ok,
+              message: user
+            )
+          )
         else
-          Failure('Could not access database')
+          Failure(
+            Response::ApiResult.new(
+              status: :internal_error,
+              message: 'Could not access database'
+            )
+          )
         end
       end
     end
