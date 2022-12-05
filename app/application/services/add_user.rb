@@ -14,7 +14,7 @@ module TravellingSuggestions
       private
 
       def check_no_use_username(input)
-        if Repository::ForUser.klass(Entity::User).find_name(input['user_name'])
+        if Repository::ForUser.klass(Entity::User).find_name(input[:user_name])
           Failure(
             Response::ApiResult.new(
               status: :conflict,
@@ -32,7 +32,7 @@ module TravellingSuggestions
       end
 
       def store_user(input)
-        user_name = input['user_name']
+        user_name = input.message[:user_name]
         user = Repository::ForUser.klass(Entity::User).db_create(user_name)
         Success(
           Response::ApiResult.new(
