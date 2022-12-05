@@ -14,9 +14,8 @@ module TravellingSuggestions
       end
 
       def call
-
         Success(
-          self.rule(@params)
+          self.rule
         )
       rescue StandardError
         Failure(
@@ -27,9 +26,9 @@ module TravellingSuggestions
         )
       end
 
-      def self.rule(param)
-        raise StandardError.new unless param[:nickname].count("^a-zA-Z0-9_").zero?
-        param
+      def rule
+        raise StandardError.new unless @params[:nickname].count("^a-zA-Z0-9_").zero?
+        @params
       end
     end
   end
