@@ -19,7 +19,7 @@ module TravellingSuggestions
     route do |routing|
       routing.public
       routing.assets
-      response['Content-Type'] = 'application/json'
+      # response['Content-Type'] = 'application/json'
 
       routing.root do
         session[:testing] = 'home'
@@ -128,7 +128,7 @@ module TravellingSuggestions
       routing.on 'user' do
         routing.is 'construct_profile' do
           user_name = routing.params['user_name']
-          result = Request::EncodedNewUserNickname.new(nickname: user_name).call()
+          result = Request::EncodedNewUserNickname.new({nickname: user_name}).call()
           if result.failure?
             failed = Representer::HTTPResponse.new(result.failure)
             routing.halt failed.http_status_code, failed.to_json
@@ -144,7 +144,7 @@ module TravellingSuggestions
 
           http_response = Representer::HTTPResponse.new(result.value!)
           response.status = http_response.http_status_code
-          Representer.User.new(result.value!.message).to_json
+          Representer::User.new(result.value!.message).to_json
 
           # user = Repository::Users.find_name(user_name)
           # puts "new user name is #{user_name}"
