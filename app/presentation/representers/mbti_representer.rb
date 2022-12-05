@@ -8,6 +8,7 @@ module TravellingSuggestions
     # Represent about mbti type
     class MBTI < Roar::Decorator
       include Roar::JSON
+      include Roar::Hypermedia
       
       property :id
       property :type
