@@ -9,7 +9,7 @@ module TravellingSuggestions
     # Represent about attraction
     class Attraction < Roar::Decorator
       include Roar::JSON
-      include Roar::hypermedia
+      include Roar::Hypermedia
       include Roar::Decorator::HypermediaConsumer
 
       property :name
