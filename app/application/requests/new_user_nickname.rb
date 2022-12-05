@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require 'dry/monads'
+require 'json'
 
 module TravellingSuggestions
   module Request
@@ -12,20 +14,22 @@ module TravellingSuggestions
       end
 
       def call
+
         Success(
-          JSON.parse(rule(@params['nickname']))
+          self.rule(@params)
         )
       rescue StandardError
         Failure(
-          Reponse::ApiResult.new(
+          Response::ApiResult.new(
             status: :forbidden,
             message: 'Invalid nickname'
           )
         )
       end
 
-      self.rule(param) do
-        NICKNAME_REGEX.match?(param) ? param : raise StandardError.new
+      def self.rule(param)
+        raise StandardError.new unless param[:nickname].count("^a-zA-Z0-9_").zero?
+        param
       end
     end
   end
