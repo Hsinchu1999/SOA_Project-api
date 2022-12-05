@@ -15,6 +15,7 @@ module TravellingSuggestions
             status: :ok,
             message: weather
           )
+        )
       rescue StandardError
         Failure(
           Response::ApiResult.new(
