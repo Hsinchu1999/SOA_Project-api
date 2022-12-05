@@ -19,6 +19,7 @@ module TravellingSuggestions
     route do |routing|
       routing.public
       routing.assets
+      response['Content-Type'] = 'application/json'
 
       routing.root do
         session[:testing] = 'home'
@@ -127,23 +128,41 @@ module TravellingSuggestions
       routing.on 'user' do
         routing.is 'construct_profile' do
           user_name = routing.params['user_name']
-          user = Repository::Users.find_name(user_name)
-          puts "new user name is #{user_name}"
-          if user
-            # incomplete
-            puts user.id
-            puts user.nickname
-            session[:retry_username] = true
-            flash[:error] = 'Nickname already in use'
-            flash[:notice] = 'Try another nickname or click personal page to login'
-            routing.redirect '/mbti_test/result'
-          else
-            # incomplete, write user mbti into db
-            Repository::Users.db_create(user_name)
-            session[:retry_username] = false
-            session[:current_user] = user_name
-            routing.redirect '/mbti_test/recommendation'
+          result = Request::EncodedNewUserNickname.new(nickname: user_name).call()
+          if result.failure?
+            failed = Representer::HTTPResponse.new(result.failure)
+            routing.halt failed.http_status_code, failed.to_json
           end
+
+          result = Service::AddUser.new.call(
+            user_name: user_name
+          )
+          if result.failure?
+            failed = Representer::HTTPResponse.new(result.failure)
+            routing.halt failed.http_status_code, failed.to_json
+          end
+
+          http_response = Representer::HTTPResponse.new(result.value!)
+          response.status = http_response.http_status_code
+          Representer.User.new(result.value!.message).to_json
+
+          # user = Repository::Users.find_name(user_name)
+          # puts "new user name is #{user_name}"
+          # if user
+          #   # incomplete
+          #   puts user.id
+          #   puts user.nickname
+          #   session[:retry_username] = true
+          #   flash[:error] = 'Nickname already in use'
+          #   flash[:notice] = 'Try another nickname or click personal page to login'
+          #   routing.redirect '/mbti_test/result'
+          # else
+          #   # incomplete, write user mbti into db
+          #   Repository::Users.db_create(user_name)
+          #   session[:retry_username] = false
+          #   session[:current_user] = user_name
+          #   routing.redirect '/mbti_test/recommendation'
+          # end
         end
         routing.is do
           nick_name = session[:current_user]
