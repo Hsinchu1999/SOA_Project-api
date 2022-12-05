@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 ruby File.read('.ruby-version').strip
 
 # Presentation layer
-gem 'muti_json'
+gem 'multi_json'
 gem 'roar'
 
 # Web Application
