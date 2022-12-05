@@ -2,6 +2,7 @@
 
 module TravellingSuggestions
   module Request
+    # A Request object for a new user nickname
     class EncodedNewUserNickname
       include Dry::Monads::Result::Mixin
       NICKNAME_REGEX = %r{/^\w+$/}
