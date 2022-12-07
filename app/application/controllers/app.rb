@@ -193,16 +193,22 @@ module TravellingSuggestions
         routing.is 'submit_login' do
           routing.post do
             nick_name = routing.params['nick_name']
-            user = Repository::Users.find_name(nick_name)
-            if user
-              session[:current_user] = user.nickname
-              routing.redirect '/user'
-            else
+            result = Service::ListUser.new.call(
+              nickname: nick_name
+            )
+            if result.failure?
+              failed = Representer::HTTPResponse.new(result.failure)
+              routing.halt failed.http_status_code, failed.to_json
+
               session[:retry_login] = true
               flash[:error] = 'Invalid Nickname'
               flash[:notice] = 'Type correct nickname or start journey to get recommendation'
               routing.redirect '/user/login'
             end
+
+            http_response = Representer::HTTPResponse.new(result.value!)
+            response.status = http_response.http_status_code
+            Representer::User.new(result.value!.message).to_json
           end
         end
         routing.is 'favorites' do

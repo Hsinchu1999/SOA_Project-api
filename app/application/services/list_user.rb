@@ -8,8 +8,8 @@ module TravellingSuggestions
     class ListUser
       include Dry::Monads::Result::Mixin
 
-      def call(_input)
-        if (user = Repository::ForUser.klass(Entity::User).find_name(nick_name))
+      def call(input)
+        if (user = Repository::ForUser.klass(Entity::User).find_name(input[:nickname]))
           Success(
             Response::ApiResult.new(
               status: :ok,
@@ -19,8 +19,8 @@ module TravellingSuggestions
         else
           Failure(
             Response::ApiResult.new(
-              status: :internal_error,
-              message: 'Could not access database'
+              status: :not_found,
+              message: 'User nickname does not exist'
             )
           )
         end
