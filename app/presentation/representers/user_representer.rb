@@ -14,7 +14,7 @@ module TravellingSuggestions
       property :id
       property :nickname
       property :mbti
-      property :favorite_attractions, extend: Representer::UserFavorite, class: OpenStruct
+      # property :favorite_attractions, extend: Representer::UserFavorite, class: Entity::UserFavorite
     end
   end
 end
