@@ -8,19 +8,18 @@ module TravellingSuggestions
         rebuild_entity Database::MBTIQuestionOrm.first(id:)
       end
 
-      def self.find_tier(tier)
-        rebuild_many_entities Database::MBTIQuestionOrm.where(tier:).all
-      end
-
       def self.rebuild_entity(db_record)
         return nil unless db_record
 
-        Entity::MBTIQuestions.new(
+        Entity::MBTIQuestion.new(
           id: db_record.id,
-          text: db_record.text,
+          question: db_record.question,
+          answerA: db_record.answerA,
+          answerB: db_record.answerB,
           section: db_record.section,
-          direction: db_record.direction,
-          tier: db_record.tier
+          directionA: db_record.directionA,
+          scoreA: db_record.scoreA,
+          scoreB: db_record.scoreB
         )
       end
 
