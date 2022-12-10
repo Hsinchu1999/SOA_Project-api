@@ -51,5 +51,56 @@ describe 'Test API routes' do
       end
     end
   end
+
+  describe 'user page' do
+    before do
+      # Constructs a valid user profile
+      VALID_NICKNAMES.each do |nickname|
+        post "/user/construct_profile?user_name=#{nickname}&mbti=ENFJ"
+      end
+    end
+
+    it 'should fetch user info on /user' do
+      VALID_NICKNAMES.each do |nickname|
+        correct_answer = TravellingSuggestions::Representer::User.new(
+          TravellingSuggestions::Repository::Users.find_name(nickname)
+        ).to_json
+        correct_answer = JSON.parse(correct_answer)
+
+        get "/user?user_name=#{nickname}"
+
+        _(last_response.status).must_equal 200
+
+        user_profile = JSON.parse(last_response.body)
+        _(user_profile['id']).must_equal correct_answer['id']
+        _(user_profile['mbti']).must_equal correct_answer['mbti']
+      end
+    end
+
+    it 'should not allow invalid user names' do
+      INVALID_NICKNAMES.each do |nickname|
+        post "/user/construct_profile?user_name=#{nickname}&mbti=ENFJ"
+
+        _(last_response.status).must_equal 403
+      end
+    end
+
+    it 'should allow correct user login' do
+      VALID_NICKNAMES.each do |nickname|
+        post "/user/submit_login?nick_name=#{nickname}"
+
+        _(last_response.status).must_equal 200
+      end
+    end
+
+    it 'should not allow incorrect user login' do
+      INVALID_NICKNAMES.each do |nickname|
+        post "/user/submit_login?nick_name=#{nickname}"
+
+        _(last_response.status).must_equal 404
+      end
+    end
+  end
+
 end
 

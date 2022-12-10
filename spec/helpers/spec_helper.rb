@@ -32,6 +32,8 @@ end[0]['time'][0]['parameter']['parameterName'].to_i
 UNAUTHORIZED = TravellingSuggestions::CWB::CWBApi::Response::Errors::Unauthorized
 
 MBTI_QUESTION_ID = Array(1..10)
+VALID_NICKNAMES = ['peter', 'Peter', 'Peter_', '_PETER', '_', 'PETERCHEN', 'peter_chen', 'peterchen999']
+INVALID_NICKNAMES = [' ', '.', '', './']
 
 CASSETTE_FOLDER = 'spec/fixtures/cassettes'
 CASSETTE_FILE = 'web_api'
