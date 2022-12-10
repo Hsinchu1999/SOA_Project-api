@@ -19,6 +19,7 @@ module TravellingSuggestions
     route do |routing|
       routing.public
       routing.assets
+      response['Content-Type'] = 'application/json'
 
       routing.root do
         session[:testing] = 'home'
@@ -26,6 +27,7 @@ module TravellingSuggestions
       end
 
       routing.on 'weather' do
+        # GET  weather/#{location}
         routing.is do
           # POST /weather/
           routing.post do
@@ -50,6 +52,27 @@ module TravellingSuggestions
       end
 
       routing.on 'mbti_test' do
+        # POST submit_answer / show_result
+        # GET  question (by id???)
+
+        routing.on 'question' do
+          # GET a single question by its question id
+          routing.on String do |question_id|
+            routing.get do
+              result = Service::ListMBTIQuestion.new.call(
+                question_id.to_i
+              )
+              if result.failure?
+                failed = Representer::HTTPResponse.new(result.failure)
+                routing.halt failed.http_status_code, failed.to_json
+              end
+              http_response = Representer::HTTPResponse.new(result.value!)
+              response.status = http_response.http_status_code
+              Representer::MBTIQuestion.new(result.value!.message).to_json
+            end
+          end
+        end
+
         routing.is 'submit_answer' do
           # accepts submitted mbti answers
           routing.post do
@@ -125,40 +148,48 @@ module TravellingSuggestions
       end
 
       routing.on 'user' do
+        # POST consturct_profile(name+mbti+attractions) / submit_login
+        # GET  user / favorites(use list_user service object)
+
+        routing.is do
+          nickname = routing.params['user_name']
+          result = Service::ListUser.new.call(
+            nickname:
+          )
+
+          if result.failure?
+            failed = Representer::HTTPResponse.new(result.failure)
+            routing.halt failed.http_status_code, failed.to_json
+          end
+
+          http_response = Representer::HTTPResponse.new(result.value!)
+          response.status = http_response.http_status_code
+          Representer::User.new(result.value!.message).to_json
+        end
+
         routing.is 'construct_profile' do
           user_name = routing.params['user_name']
-          user = Repository::Users.find_name(user_name)
-          puts "new user name is #{user_name}"
-          if user
-            # incomplete
-            puts user.id
-            puts user.nickname
-            session[:retry_username] = true
-            flash[:error] = 'Nickname already in use'
-            flash[:notice] = 'Try another nickname or click personal page to login'
-            routing.redirect '/mbti_test/result'
-          else
-            # incomplete, write user mbti into db
-            Repository::Users.db_create(user_name)
-            session[:retry_username] = false
-            session[:current_user] = user_name
-            routing.redirect '/mbti_test/recommendation'
+          mbti = routing.params['mbti']
+          result = Request::EncodedNewUserNickname.new({ nickname: user_name }).call
+          if result.failure?
+            failed = Representer::HTTPResponse.new(result.failure)
+            routing.halt failed.http_status_code, failed.to_json
           end
-        end
-        routing.is do
-          nick_name = session[:current_user]
-          puts 'currently at /user'
-          puts nick_name
-          user = Repository::Users.find_name(nick_name)
-          puts 'user = '
-          puts user
-          if user
-            viewable_user = Views::User.new(user)
-            view 'personal_page', locals: { user: viewable_user }
-          else
-            routing.redirect '/user/login' unless user
+
+          result = Service::AddUser.new.call(
+            nickname: user_name,
+            mbti:
+          )
+          if result.failure?
+            failed = Representer::HTTPResponse.new(result.failure)
+            routing.halt failed.http_status_code, failed.to_json
           end
+
+          http_response = Representer::HTTPResponse.new(result.value!)
+          response.status = http_response.http_status_code
+          Representer::User.new(result.value!.message).to_json
         end
+
         routing.is 'login' do
           user_name = session[:current_user]
           user = Repository::Users.find_name(user_name)
@@ -174,27 +205,37 @@ module TravellingSuggestions
         routing.is 'submit_login' do
           routing.post do
             nick_name = routing.params['nick_name']
-            user = Repository::Users.find_name(nick_name)
-            if user
-              session[:current_user] = user.nickname
-              routing.redirect '/user'
-            else
+            result = Service::ListUser.new.call(
+              nickname: nick_name
+            )
+            if result.failure?
+              failed = Representer::HTTPResponse.new(result.failure)
+              routing.halt failed.http_status_code, failed.to_json
+
               session[:retry_login] = true
               flash[:error] = 'Invalid Nickname'
               flash[:notice] = 'Type correct nickname or start journey to get recommendation'
               routing.redirect '/user/login'
             end
+
+            http_response = Representer::HTTPResponse.new(result.value!)
+            response.status = http_response.http_status_code
+            Representer::User.new(result.value!.message).to_json
           end
         end
         routing.is 'favorites' do
-          nick_name = session[:current_user]
-          user = Repository::Users.find_name(nick_name)
-          if user
-            viewable_user = Views::User.new(user)
-            view 'favorites', locals: { favorite_attractions: viewable_user.favorite_attractions }
-          else
-            routing.redirect '/user/login'
+          nickname = routing.params['user_name']
+          result = Service::ListUserFavorites.new.call(
+            nickname:
+          )
+          if result.failure?
+            failed = Representer::HTTPResponse.new(result.failure)
+            routing.halt failed.http_status_code, failed.to_json
           end
+
+          http_response = Representer::HTTPResponse.new(result.value!)
+          response.status = http_response.http_status_code
+          Representer::User.new(result.value!.message).to_json
         end
         routing.is 'viewed-attraction' do
           view 'viewed_attraction'

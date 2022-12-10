@@ -8,7 +8,7 @@ module TravellingSuggestions
     # Represent about mbti question
     class MBTIQuestion < Roar::Decorator
       include Roar::JSON
-      
+
       property :id
       property :question
       property :answerA

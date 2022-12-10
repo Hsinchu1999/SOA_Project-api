@@ -5,22 +5,22 @@ require 'dry/monads'
 module TravellingSuggestions
   module Service
     # A Service object to validate Entity::Weather object from db
-    class ListWeather
+    class ListMBTIQuestion
       include Dry::Monads::Result::Mixin
 
-      def call(region_id)
-        weather = Repository::ForAttraction.klass(Entity::Weather).find_region_id(region_id)
+      def call(question_id)
+        mbti_question = Repository::ForMBTI.klass(Entity::MBTIQuestion).find_id(question_id)
         Success(
           Response::ApiResult.new(
             status: :ok,
-            message: weather
+            message: mbti_question
           )
         )
       rescue StandardError
         Failure(
           Response::ApiResult.new(
-            status: :internal_error,
-            message: 'Could not fetch weather object from database'
+            status: :not_found,
+            message: 'Could not fetch mbti question from database'
           )
         )
       end

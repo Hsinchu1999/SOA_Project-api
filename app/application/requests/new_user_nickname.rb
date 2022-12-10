@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require 'dry/monads'
+require 'json'
+
 module TravellingSuggestions
   module Request
+    # A Request object for a new user nickname
     class EncodedNewUserNickname
       include Dry::Monads::Result::Mixin
       NICKNAME_REGEX = %r{/^\w+$/}
@@ -12,19 +16,21 @@ module TravellingSuggestions
 
       def call
         Success(
-          JSON.parse(rule(@params['nickname']))
+          rule
         )
       rescue StandardError
         Failure(
-          Reponse::ApiResult.new(
+          Response::ApiResult.new(
             status: :forbidden,
             message: 'Invalid nickname'
           )
         )
       end
 
-      self.rule(param) do
-        NICKNAME_REGEX.match?(param) ? param : raise StandardError.new
+      def rule
+        raise StandardError unless @params[:nickname].count('^a-zA-Z0-9_').zero?
+
+        @params
       end
     end
   end

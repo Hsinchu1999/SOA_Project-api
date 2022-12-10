@@ -8,6 +8,7 @@ GEM
     concurrent-ruby (1.1.10)
     crack (0.4.5)
       rexml
+    declarative (0.0.20)
     docile (1.4.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -94,6 +95,7 @@ GEM
     minitest (5.16.3)
     minitest-rg (5.2.0)
       minitest (~> 5.0)
+    multi_json (1.15.0)
     nio4r (2.5.8)
     parser (3.1.2.1)
       ast (~> 2.4.1)
@@ -113,7 +115,13 @@ GEM
       kwalify (~> 0.7.0)
       parser (~> 3.1.0)
       rainbow (>= 2.0, < 4.0)
+    representable (3.2.0)
+      declarative (< 0.1.0)
+      trailblazer-option (>= 0.1.1, < 0.2.0)
+      uber (< 0.2.0)
     rexml (3.2.5)
+    roar (1.1.1)
+      representable (~> 3.0)
     roda (3.61.0)
       rack
     sequel (5.62.0)
@@ -130,6 +138,8 @@ GEM
     temple (0.8.2)
     thor (1.2.1)
     tilt (2.0.11)
+    trailblazer-option (0.1.2)
+    uber (0.1.0)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8.2)
@@ -156,12 +166,14 @@ DEPENDENCIES
   http (~> 5)
   minitest (~> 5.0)
   minitest-rg (~> 5)
+  multi_json
   pg
   pry
   puma (~> 5)
   rack-session (~> 0.3)
   rake
   reek
+  roar
   roda (~> 3)
   sequel (~> 5.49)
   simplecov (~> 0)

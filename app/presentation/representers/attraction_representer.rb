@@ -9,7 +9,7 @@ module TravellingSuggestions
     # Represent about attraction
     class Attraction < Roar::Decorator
       include Roar::JSON
-      include Roar::hypermedia
+      include Roar::Hypermedia
       include Roar::Decorator::HypermediaConsumer
 
       property :name
@@ -26,14 +26,15 @@ module TravellingSuggestions
       property :best_time_to_visit
 
       link :self do
-        '#{Api.config.API_HOST}/attractions/#{attraction_name}/#{city_name}'
+        "#{Api.config.API_HOST}/attractions/#{attraction_name}/#{city_name}"
       end
 
       private
-      
+
       def city_name
         represented.region.city
       end
+
       def attraction_name
         represented.name
       end
