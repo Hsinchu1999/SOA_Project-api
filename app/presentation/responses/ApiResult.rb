@@ -8,8 +8,8 @@ module TravellingSuggestions
 
     FAILURE = Set.new(
       %i[forbidden not_found bad_request conflict cannot_process
-        internal_error]
-      ).freeze
+         internal_error]
+    ).freeze
 
     CODES = SUCCESS | FAILURE
 
