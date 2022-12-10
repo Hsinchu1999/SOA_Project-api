@@ -153,6 +153,7 @@ module TravellingSuggestions
 
         routing.is 'construct_profile' do
           user_name = routing.params['user_name']
+          mbti = routing.params['mbti']
           result = Request::EncodedNewUserNickname.new({nickname: user_name}).call()
           if result.failure?
             failed = Representer::HTTPResponse.new(result.failure)
@@ -160,7 +161,8 @@ module TravellingSuggestions
           end
 
           result = Service::AddUser.new.call(
-            user_name: user_name
+            nickname: user_name,
+            mbti: mbti
           )
           if result.failure?
             failed = Representer::HTTPResponse.new(result.failure)
