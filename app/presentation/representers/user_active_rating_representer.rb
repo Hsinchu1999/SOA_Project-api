@@ -11,7 +11,7 @@ module TravellingSuggestions
     # Represent about User Active Rating
     class UserActiveRating < Roar::Decorator
       include Roar::JSON
-      
+
       property :user, extend: Representer::User, class: OpenStruct
       property :attraction, extend: Representer::Attraction, class: OpenStruct
       property :score

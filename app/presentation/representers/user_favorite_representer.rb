@@ -11,7 +11,7 @@ module TravellingSuggestions
     # Represent about User favorite
     class UserFavorite < Roar::Decorator
       include Roar::JSON
-      
+
       collection :favorites_list, extend: Representer::Attraction, class: OpenStruct
     end
   end

@@ -10,7 +10,7 @@ module TravellingSuggestions
     # Represent about forecast of 1 week
     class ForecastOneWeek < Roar::Decorator
       include Roar::JSON
-      
+
       property :day1, extend: Representer::ForecastPerDay, class: OpenStruct
       property :day2, extend: Representer::ForecastPerDay, class: OpenStruct
       property :day3, extend: Representer::ForecastPerDay, class: OpenStruct

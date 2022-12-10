@@ -8,7 +8,7 @@ module TravellingSuggestions
     # Represent about forecast of 12 Hr
     class ForecastPer12Hr < Roar::Decorator
       include Roar::JSON
-      
+
       property :pop
       property :min_temp
       property :max_temp

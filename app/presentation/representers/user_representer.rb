@@ -10,7 +10,7 @@ module TravellingSuggestions
     # Represent about User
     class User < Roar::Decorator
       include Roar::JSON
-      
+
       property :id
       property :nickname
       property :mbti
