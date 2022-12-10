@@ -68,8 +68,6 @@ module TravellingSuggestions
               end
               http_response = Representer::HTTPResponse.new(result.value!)
               response.status = http_response.http_status_code
-              puts 'before representer'
-              puts result.value!
               Representer::MBTIQuestion.new(result.value!.message).to_json
             end
           end
