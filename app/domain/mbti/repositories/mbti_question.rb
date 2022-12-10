@@ -5,6 +5,9 @@ module TravellingSuggestions
     # A Repository for Entity::MBTIQuestion object
     class MBTIQuestions
       def self.find_id(id)
+        puts ' in Repository'
+        puts "id = #{id}"
+        puts id.class
         rebuild_entity Database::MBTIQuestionOrm.first(id:)
       end
 

@@ -29,6 +29,11 @@ task :db_spec do
   sh 'ruby spec/gateway_database_spec.rb'
 end
 
+desc 'run api tests'
+task :api_spec do
+  sh 'ruby spec/tests_acceptance/api_spec.rb'
+end
+
 task :run do
   sh 'bundle exec puma'
 end
