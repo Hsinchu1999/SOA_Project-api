@@ -60,7 +60,7 @@ module TravellingSuggestions
           routing.on String do |question_id|
             routing.get do
               result = Service::ListMBTIQuestion.new.call(
-               question_id.to_i
+                question_id.to_i
               )
               if result.failure?
                 failed = Representer::HTTPResponse.new(result.failure)
@@ -154,7 +154,7 @@ module TravellingSuggestions
         routing.is do
           nickname = routing.params['user_name']
           result = Service::ListUser.new.call(
-            nickname: nickname
+            nickname:
           )
 
           if result.failure?
@@ -170,7 +170,7 @@ module TravellingSuggestions
         routing.is 'construct_profile' do
           user_name = routing.params['user_name']
           mbti = routing.params['mbti']
-          result = Request::EncodedNewUserNickname.new({nickname: user_name}).call()
+          result = Request::EncodedNewUserNickname.new({ nickname: user_name }).call
           if result.failure?
             failed = Representer::HTTPResponse.new(result.failure)
             routing.halt failed.http_status_code, failed.to_json
@@ -178,7 +178,7 @@ module TravellingSuggestions
 
           result = Service::AddUser.new.call(
             nickname: user_name,
-            mbti: mbti
+            mbti:
           )
           if result.failure?
             failed = Representer::HTTPResponse.new(result.failure)
@@ -226,7 +226,7 @@ module TravellingSuggestions
         routing.is 'favorites' do
           nickname = routing.params['user_name']
           result = Service::ListUserFavorites.new.call(
-            nickname: nickname
+            nickname:
           )
           if result.failure?
             failed = Representer::HTTPResponse.new(result.failure)
