@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'dry/monads'
 require 'json'
 
@@ -15,7 +16,7 @@ module TravellingSuggestions
 
       def call
         Success(
-          self.rule
+          rule
         )
       rescue StandardError
         Failure(
@@ -27,7 +28,8 @@ module TravellingSuggestions
       end
 
       def rule
-        raise StandardError.new unless @params[:nickname].count("^a-zA-Z0-9_").zero?
+        raise StandardError unless @params[:nickname].count('^a-zA-Z0-9_').zero?
+
         @params
       end
     end
