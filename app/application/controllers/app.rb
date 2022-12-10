@@ -151,6 +151,22 @@ module TravellingSuggestions
         # POST consturct_profile(name+mbti+attractions) / submit_login
         # GET  user / favorites(use list_user service object)
 
+        routing.is do
+          nickname = routing.params['user_name']
+          result = Service::ListUser.new.call(
+            nickname: nickname
+          )
+
+          if result.failure?
+            failed = Representer::HTTPResponse.new(result.failure)
+            routing.halt failed.http_status_code, failed.to_json
+          end
+
+          http_response = Representer::HTTPResponse.new(result.value!)
+          response.status = http_response.http_status_code
+          Representer::User.new(result.value!.message).to_json
+        end
+
         routing.is 'construct_profile' do
           user_name = routing.params['user_name']
           mbti = routing.params['mbti']
@@ -173,20 +189,7 @@ module TravellingSuggestions
           response.status = http_response.http_status_code
           Representer::User.new(result.value!.message).to_json
         end
-        routing.is do
-          nick_name = session[:current_user]
-          puts 'currently at /user'
-          puts nick_name
-          user = Repository::Users.find_name(nick_name)
-          puts 'user = '
-          puts user
-          if user
-            viewable_user = Views::User.new(user)
-            view 'personal_page', locals: { user: viewable_user }
-          else
-            routing.redirect '/user/login' unless user
-          end
-        end
+
         routing.is 'login' do
           user_name = session[:current_user]
           user = Repository::Users.find_name(user_name)
