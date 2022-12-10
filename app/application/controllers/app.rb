@@ -19,7 +19,7 @@ module TravellingSuggestions
     route do |routing|
       routing.public
       routing.assets
-      # response['Content-Type'] = 'application/json'
+      response['Content-Type'] = 'application/json'
 
       routing.root do
         session[:testing] = 'home'
@@ -27,6 +27,7 @@ module TravellingSuggestions
       end
 
       routing.on 'weather' do
+        # GET  weather/#{location}
         routing.is do
           # POST /weather/
           routing.post do
@@ -51,6 +52,27 @@ module TravellingSuggestions
       end
 
       routing.on 'mbti_test' do
+        # POST submit_answer / show_result
+        # GET  question (by id???)
+
+        routing.on 'question' do
+          # GET a single question by its question id
+          routing.on String do |question_id|
+            routing.get do
+              result = Service::ListMBTIQuestion.new.call(
+               question_id.to_i
+              )
+              if result.failure?
+                failed = Representer::HTTPResponse.new(result.failure)
+                routing.halt failed.http_status_code, failed.to_json
+              end
+              http_response = Representer::HTTPResponse.new(result.value!)
+              response.status = http_response.http_status_code
+              Representer::MBTIQuestion.new(result.value!.message).to_json
+            end
+          end
+        end
+
         routing.is 'submit_answer' do
           # accepts submitted mbti answers
           routing.post do
@@ -126,6 +148,9 @@ module TravellingSuggestions
       end
 
       routing.on 'user' do
+        # POST consturct_profile(name+mbti+attractions) / submit_login
+        # GET  user / favorites(use list_user service object)
+
         routing.is 'construct_profile' do
           user_name = routing.params['user_name']
           result = Request::EncodedNewUserNickname.new({nickname: user_name}).call()
