@@ -224,14 +224,18 @@ module TravellingSuggestions
           end
         end
         routing.is 'favorites' do
-          nick_name = session[:current_user]
-          user = Repository::Users.find_name(nick_name)
-          if user
-            viewable_user = Views::User.new(user)
-            view 'favorites', locals: { favorite_attractions: viewable_user.favorite_attractions }
-          else
-            routing.redirect '/user/login'
+          nickname = routing.params['user_name']
+          result = Service::ListUserFavorites.new.call(
+            nickname: nickname
+          )
+          if result.failure?
+            failed = Representer::HTTPResponse.new(result.failure)
+            routing.halt failed.http_status_code, failed.to_json
           end
+
+          http_response = Representer::HTTPResponse.new(result.value!)
+          response.status = http_response.http_status_code
+          Representer::User.new(result.value!.message).to_json
         end
         routing.is 'viewed-attraction' do
           view 'viewed_attraction'
