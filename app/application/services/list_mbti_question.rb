@@ -9,7 +9,7 @@ module TravellingSuggestions
       include Dry::Monads::Result::Mixin
 
       def call(question_id)
-        mbti_question = Repository::MBTIQuestions.find_id(question_id)
+        mbti_question = Repository::ForMBTI.klass(Entity::MBTIQuestion).find_id(question_id)
         Success(
           Response::ApiResult.new(
             status: :ok,
