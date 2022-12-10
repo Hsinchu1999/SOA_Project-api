@@ -15,7 +15,7 @@ Rake::TestTask.new(:spec) do |t|
 end
 
 desc 'update weather'
-task :update_wea do
+task :update_weather do
   sh 'ruby weather.rb'
 end
 
