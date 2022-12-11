@@ -17,13 +17,13 @@ module TravellingSuggestions
     plugin :halt
 
     route do |routing|
-      routing.public
-      routing.assets
+      # routing.public
+      # routing.assets
       response['Content-Type'] = 'application/json'
 
       routing.root do
         session[:testing] = 'home'
-        view 'home'
+        # view 'home'
       end
 
       routing.on 'weather' do
@@ -69,6 +69,7 @@ module TravellingSuggestions
           # GET a single question by its question id
           routing.get do
             question_id = routing.params['question_id']
+            puts question_id
             result = Service::ListMBTIQuestion.new.call(
               question_id.to_i
             )
@@ -104,10 +105,10 @@ module TravellingSuggestions
             # incomplete
             puts 'give some warning here by flash'
           end
-          view 'mbti_test_result'
+          # view 'mbti_test_result'
         end
         routing.is 'recommendation' do
-          view 'recommendation'
+          # view 'recommendation'
         end
       end
 
