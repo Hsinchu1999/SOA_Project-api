@@ -69,7 +69,6 @@ module TravellingSuggestions
           # GET a single question by its question id
           routing.get do
             question_id = routing.params['question_id']
-            puts "question_id = #{question_id}"
             result = Service::ListMBTIQuestion.new.call(
               question_id.to_i
             )
