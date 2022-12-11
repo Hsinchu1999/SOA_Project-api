@@ -56,7 +56,7 @@ describe 'Test API routes' do
     before do
       # Constructs a valid user profile
       VALID_NICKNAMES.each do |nickname|
-        post "/user/construct_profile?user_name=#{nickname}&mbti=ENFJ"
+        post "/user/construct_profile?nickname=#{nickname}&mbti=ENFJ"
       end
     end
 
@@ -67,7 +67,7 @@ describe 'Test API routes' do
         ).to_json
         correct_answer = JSON.parse(correct_answer)
 
-        get "/user?user_name=#{nickname}"
+        get "/user?nickname=#{nickname}"
 
         _(last_response.status).must_equal 200
 
@@ -79,7 +79,7 @@ describe 'Test API routes' do
 
     it 'should not allow invalid user names' do
       INVALID_NICKNAMES.each do |nickname|
-        post "/user/construct_profile?user_name=#{nickname}&mbti=ENFJ"
+        post "/user/construct_profile?nickname=#{nickname}&mbti=ENFJ"
 
         _(last_response.status).must_equal 403
       end
@@ -87,7 +87,7 @@ describe 'Test API routes' do
 
     it 'should allow correct user login' do
       VALID_NICKNAMES.each do |nickname|
-        post "/user/submit_login?nick_name=#{nickname}"
+        post "/user/submit_login?nickname=#{nickname}"
 
         _(last_response.status).must_equal 200
       end
@@ -95,7 +95,7 @@ describe 'Test API routes' do
 
     it 'should not allow incorrect user login' do
       INVALID_NICKNAMES.each do |nickname|
-        post "/user/submit_login?nick_name=#{nickname}"
+        post "/user/submit_login?nickname=#{nickname}"
 
         _(last_response.status).must_equal 404
       end
