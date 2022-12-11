@@ -65,21 +65,21 @@ module TravellingSuggestions
         # POST submit_answer / result
         # GET  question (by id???)
 
-        routing.on 'question' do
+        routing.is 'question' do
           # GET a single question by its question id
-          routing.on String do |question_id|
-            routing.get do
-              result = Service::ListMBTIQuestion.new.call(
-                question_id.to_i
-              )
-              if result.failure?
-                failed = Representer::HTTPResponse.new(result.failure)
-                routing.halt failed.http_status_code, failed.to_json
-              end
-              http_response = Representer::HTTPResponse.new(result.value!)
-              response.status = http_response.http_status_code
-              Representer::MBTIQuestion.new(result.value!.message).to_json
+          routing.get do
+            question_id = routing.params['question_id']
+            puts "question_id = #{question_id}"
+            result = Service::ListMBTIQuestion.new.call(
+              question_id.to_i
+            )
+            if result.failure?
+              failed = Representer::HTTPResponse.new(result.failure)
+              routing.halt failed.http_status_code, failed.to_json
             end
+            http_response = Representer::HTTPResponse.new(result.value!)
+            response.status = http_response.http_status_code
+            Representer::MBTIQuestion.new(result.value!.message).to_json
           end
         end
 

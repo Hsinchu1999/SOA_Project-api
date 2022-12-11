@@ -36,7 +36,7 @@ describe 'Test API routes' do
         ).to_json
         correct_answer = JSON.parse(correct_answer)
 
-        get "/mbti_test/question/#{id.to_s}"
+        get "/mbti_test/question?question_id=#{id.to_s}"
         _(last_response.status).must_equal 200
 
         mbti_question = JSON.parse(last_response.body)
