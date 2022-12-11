@@ -27,15 +27,15 @@ jobs:
       - name: Setup standard test database
         env:
           DB_FILENAME: ${{ secrets.DB_FILENAME }}
-        run: RACK_ENV=test rake db:migrate
+        run: RACK_ENV=test bundle exec rake db:migrate
       
       - name: Setup mbti test database
         env:
           DB_FILENAME: ${{ secrets.DB_FILENAME }}
-        run: RACK_ENV=test rake setup_mbti
+        run: RACK_ENV=test bundle exec rake setup_mbti
       
       - name: Run all api specs
         env:
           DB_FILENAME: ${{ secrets.DB_FILENAME }}
           API_HOST: ${{ secrets.API_HOST }}
-        run: RACK_ENV=test rake api_spec
+        run: RACK_ENV=test bundle exec rake api_spec
