@@ -62,7 +62,7 @@ module TravellingSuggestions
       end
 
       routing.on 'mbti_test' do
-        # POST submit_answer / show_result
+        # POST submit_answer / result
         # GET  question (by id???)
 
         routing.on 'question' do
@@ -97,51 +97,6 @@ module TravellingSuggestions
             else
               routing.redirect '/mbti_test/continue'
             end
-          end
-        end
-        routing.is 'show_result' do
-          routing.post do
-            # answer = routing.params['score']
-            routing.redirect '/mbti_test/result'
-          end
-        end
-        routing.is 'previous_page' do
-          routing.post do
-            session[:answered_cnt] = session[:answered_cnt] - 1
-            session[:mbti_answers].pop
-            if session[:answered_cnt].zero?
-              routing.redirect '/mbti_test/start'
-            else
-              routing.redirect '/mbti_test/continue'
-            end
-          end
-        end
-        routing.is 'start' do
-          if session[:current_user]
-            routing.redirect '/user'
-          else
-            session[:answered_cnt] = 0
-            session[:mbti_answers] = []
-            view 'mbti_test_first'
-          end
-        end
-        routing.is 'continue' do
-          puts 'in mbti_test/continue'
-          puts session[:answered_cnt]
-          if session[:answered_cnt].nil?
-            routing.redirect '/mbti_test/start'
-          else
-            view 'mbti_test_general', locals: { current_question: session[:answered_cnt] + 1 }
-          end
-        end
-
-        routing.is 'last' do
-          puts 'in mbti_test/last'
-          puts session[:answered_cnt]
-          if session[:answered_cnt] != 4
-            routing.redirect '/mbti_test/start'
-          else
-            view 'mbti_test_last'
           end
         end
 
@@ -200,18 +155,6 @@ module TravellingSuggestions
           Representer::User.new(result.value!.message).to_json
         end
 
-        routing.is 'login' do
-          nickname = session[:current_user]
-          user = Repository::Users.find_name(nickname)
-          puts 'currently at user/login'
-          puts 'nickname = '
-          puts nickname
-          if user
-            routing.redirect '/user'
-          else
-            view 'login'
-          end
-        end
         routing.is 'submit_login' do
           routing.post do
             nickname = routing.params['nickname']
@@ -233,6 +176,7 @@ module TravellingSuggestions
             Representer::User.new(result.value!.message).to_json
           end
         end
+
         routing.is 'favorites' do
           nickname = routing.params['nickname']
           result = Service::ListUserFavorites.new.call(
@@ -246,9 +190,6 @@ module TravellingSuggestions
           http_response = Representer::HTTPResponse.new(result.value!)
           response.status = http_response.http_status_code
           Representer::User.new(result.value!.message).to_json
-        end
-        routing.is 'viewed-attraction' do
-          view 'viewed_attraction'
         end
       end
     end
