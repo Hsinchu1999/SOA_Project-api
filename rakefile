@@ -15,7 +15,7 @@ Rake::TestTask.new(:spec) do |t|
 end
 
 desc 'update weather'
-task :update_wea do
+task :update_weather do
   sh 'ruby weather.rb'
 end
 
@@ -27,6 +27,11 @@ end
 desc 'run tests'
 task :db_spec do
   sh 'ruby spec/gateway_database_spec.rb'
+end
+
+desc 'run api tests'
+task :api_spec do
+  sh 'ruby spec/tests_acceptance/api_spec.rb'
 end
 
 task :run do
