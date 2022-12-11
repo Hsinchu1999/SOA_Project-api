@@ -162,7 +162,7 @@ module TravellingSuggestions
         # GET  user / favorites(use list_user service object)
 
         routing.is do
-          nickname = routing.params['user_name']
+          nickname = routing.params['nickname']
           result = Service::ListUser.new.call(
             nickname:
           )
@@ -178,16 +178,16 @@ module TravellingSuggestions
         end
 
         routing.is 'construct_profile' do
-          user_name = routing.params['user_name']
+          nickname = routing.params['nickname']
           mbti = routing.params['mbti']
-          result = Request::EncodedNewUserNickname.new({ nickname: user_name }).call
+          result = Request::EncodedNewUserNickname.new({ nickname: nickname }).call
           if result.failure?
             failed = Representer::HTTPResponse.new(result.failure)
             routing.halt failed.http_status_code, failed.to_json
           end
 
           result = Service::AddUser.new.call(
-            nickname: user_name,
+            nickname: nickname,
             mbti:
           )
           if result.failure?
@@ -201,11 +201,11 @@ module TravellingSuggestions
         end
 
         routing.is 'login' do
-          user_name = session[:current_user]
-          user = Repository::Users.find_name(user_name)
+          nickname = session[:current_user]
+          user = Repository::Users.find_name(nickname)
           puts 'currently at user/login'
-          puts 'user_name = '
-          puts user_name
+          puts 'nickname = '
+          puts nickname
           if user
             routing.redirect '/user'
           else
@@ -214,9 +214,9 @@ module TravellingSuggestions
         end
         routing.is 'submit_login' do
           routing.post do
-            nick_name = routing.params['nick_name']
+            nickname = routing.params['nickname']
             result = Service::ListUser.new.call(
-              nickname: nick_name
+              nickname: nickname
             )
             if result.failure?
               failed = Representer::HTTPResponse.new(result.failure)
@@ -234,7 +234,7 @@ module TravellingSuggestions
           end
         end
         routing.is 'favorites' do
-          nickname = routing.params['user_name']
+          nickname = routing.params['nickname']
           result = Service::ListUserFavorites.new.call(
             nickname:
           )
