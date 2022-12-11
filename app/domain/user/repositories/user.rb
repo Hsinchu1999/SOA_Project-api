@@ -35,9 +35,8 @@ module TravellingSuggestions
         nil
       end
 
-      def self.db_create(nickname)
-        # incomplete, write user mbti into db
-        Database::UserOrm.create(nickname:, mbti: 'ENTJ')
+      def self.db_create(nickname, mbti)
+        Database::UserOrm.create(nickname:, mbti:)
       end
       # to be completed
     end

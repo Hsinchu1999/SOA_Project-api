@@ -3,6 +3,10 @@
 source 'https://rubygems.org'
 ruby File.read('.ruby-version').strip
 
+# Presentation layer
+gem 'multi_json'
+gem 'roar'
+
 # Web Application
 gem 'figaro', '~> 1.2'
 gem 'puma', '~> 5'
@@ -29,6 +33,7 @@ gem 'http', '~> 5'
 # Testing
 gem 'minitest', '~> 5.0'
 gem 'minitest-rg', '~> 5'
+gem 'rack-test', '~> 2.0.2'
 gem 'simplecov', '~> 0'
 gem 'vcr', '~> 6'
 gem 'webmock', '~> 3'

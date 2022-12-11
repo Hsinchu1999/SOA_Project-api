@@ -5,15 +5,16 @@ require 'dry/monads'
 module TravellingSuggestions
   module Service
     # A Service object for validating Entity::User object from db
-    class ListUser
+    class ListUserFavorites
       include Dry::Monads::Result::Mixin
 
       def call(input)
         if (user = Repository::ForUser.klass(Entity::User).find_name(input[:nickname]))
+          puts 'success'
           Success(
             Response::ApiResult.new(
               status: :ok,
-              message: user
+              message: user.favorite_attractions
             )
           )
         else

@@ -14,19 +14,39 @@ module TravellingSuggestions
       private
 
       def check_no_use_username(input)
-        if Repository::ForUser.klass(Entity::User).find_name(input['user_name'])
-          Failure('Nickname already in use')
+        if Repository::ForUser.klass(Entity::User).find_name(input[:nickname])
+          Failure(
+            Response::ApiResult.new(
+              status: :conflict,
+              message: 'Nickname already in use'
+            )
+          )
         else
-          Success(input)
+          Success(
+            Response::ApiResult.new(
+              status: :ok,
+              message: input
+            )
+          )
         end
       end
 
       def store_user(input)
-        user_name = input['user_name']
-        user = Repository::ForUser.klass(Entity::User).db_create(user_name)
-        Success(user)
+        nickname = input.message[:nickname]
+        mbti = input.message[:mbti]
+
+        user = Repository::ForUser.klass(Entity::User).db_create(nickname, mbti)
+        Success(
+          Response::ApiResult.new(
+            status: :ok,
+            message: user
+          )
+        )
       rescue StandardError
-        Failure('Having trouble accessing database')
+        Failure(Response::ApiResult.new(
+                  status: :not_found,
+                  message: 'Having trouble accessing database'
+                ))
       end
     end
   end
