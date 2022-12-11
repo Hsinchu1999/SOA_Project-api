@@ -21,16 +21,19 @@ end
 
 desc 'setup mbti questions'
 task :setup_mbti do
+  require_relative 'config/environment'
   sh 'ruby setup_mbti.rb'
 end
 
 desc 'run tests'
 task :db_spec do
+  require_relative 'config/environment'
   sh 'ruby spec/gateway_database_spec.rb'
 end
 
 desc 'run api tests'
 task :api_spec do
+  require_relative 'config/environment'
   sh 'ruby spec/tests_acceptance/api_spec.rb'
 end
 
