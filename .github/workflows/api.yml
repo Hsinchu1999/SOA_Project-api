@@ -1,0 +1,41 @@
+---
+name: API continuous integration
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches:
+      - '**'
+  workflow_dispatch:
+
+jobs:
+  api_test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu, macos]
+    runs-on: ${{ matrix.os }}-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      
+      - name: Setup standard test database
+        env:
+          DB_FILENAME: ${{ secrets.DB_FILENAME }}
+        run: RACK_ENV=test bundle exec rake db:migrate
+      
+      - name: Setup mbti test database
+        env:
+          DB_FILENAME: ${{ secrets.DB_FILENAME }}
+        run: RACK_ENV=test bundle exec rake setup_mbti
+      
+      - name: Run all api specs
+        env:
+          DB_FILENAME: ${{ secrets.DB_FILENAME }}
+          API_HOST: ${{ secrets.API_HOST }}
+        run: RACK_ENV=test bundle exec rake api_spec
