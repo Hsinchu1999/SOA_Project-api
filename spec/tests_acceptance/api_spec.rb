@@ -25,6 +25,10 @@ describe 'Test API routes' do
     it 'should successfully return root information' do
       get '/'
       _(last_response.status).must_equal 200
+      
+      message = JSON.parse(last_response.body)
+
+      _(message['message']).must_equal "TravellingSuggestions API v1 at /api/v1/ in test mode"
     end
   end
 
@@ -36,7 +40,7 @@ describe 'Test API routes' do
         ).to_json
         correct_answer = JSON.parse(correct_answer)
 
-        get "/mbti_test/question?question_id=#{id.to_s}"
+        get "/api/v1/mbti_test/question?question_id=#{id.to_s}"
         _(last_response.status).must_equal 200
 
         mbti_question = JSON.parse(last_response.body)
@@ -56,7 +60,7 @@ describe 'Test API routes' do
     before do
       # Constructs a valid user profile
       VALID_NICKNAMES.each do |nickname|
-        post "/user/construct_profile?nickname=#{nickname}&mbti=ENFJ"
+        post "/api/v1/user/construct_profile?nickname=#{nickname}&mbti=ENFJ"
       end
     end
 
@@ -67,7 +71,7 @@ describe 'Test API routes' do
         ).to_json
         correct_answer = JSON.parse(correct_answer)
 
-        get "/user?nickname=#{nickname}"
+        get "/api/v1/user?nickname=#{nickname}"
 
         _(last_response.status).must_equal 200
 
@@ -79,7 +83,7 @@ describe 'Test API routes' do
 
     it 'should not allow invalid user names' do
       INVALID_NICKNAMES.each do |nickname|
-        post "/user/construct_profile?nickname=#{nickname}&mbti=ENFJ"
+        post "/api/v1/user/construct_profile?nickname=#{nickname}&mbti=ENFJ"
 
         _(last_response.status).must_equal 403
       end
@@ -87,7 +91,7 @@ describe 'Test API routes' do
 
     it 'should allow correct user login' do
       VALID_NICKNAMES.each do |nickname|
-        post "/user/submit_login?nickname=#{nickname}"
+        post "/api/v1/user/submit_login?nickname=#{nickname}"
 
         _(last_response.status).must_equal 200
       end
@@ -95,7 +99,7 @@ describe 'Test API routes' do
 
     it 'should not allow incorrect user login' do
       INVALID_NICKNAMES.each do |nickname|
-        post "/user/submit_login?nickname=#{nickname}"
+        post "/api/v1/user/submit_login?nickname=#{nickname}"
 
         _(last_response.status).must_equal 404
       end
