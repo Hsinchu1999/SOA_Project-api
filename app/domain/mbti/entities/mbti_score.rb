@@ -19,13 +19,11 @@ module TravellingSuggestions
       end
 
       def mbti_type
-        puts @questions.class
         scores = {E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0}
         personalities = ''
         @questions.each_with_index do |question, index|
           answer = @answers[index]
           section = question.section
-          # section_sym = question.section.to_sym
           directionA = question.directionA
           directionB = section.gsub(directionA, '')
           scoreA = question.scoreA
