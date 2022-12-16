@@ -38,4 +38,6 @@ jobs:
         env:
           DB_FILENAME: ${{ secrets.DB_FILENAME }}
           API_HOST: ${{ secrets.API_HOST }}
+          MBTI_QUESTION_MAX_ID: ${{ secrets.MBTI_QUESTION_MAX_ID }}
+          MBTI_QUESTION_MIN_ID: ${{ secrets.MBTI_QUESTION_MIN_ID }}
         run: RACK_ENV=test bundle exec rake api_spec

@@ -22,7 +22,7 @@ describe 'Test API routes' do
   end
 
   describe 'Root route' do
-    it 'should successfully return root information' do
+    it 'HAPPY: should successfully return root information' do
       get '/'
       _(last_response.status).must_equal 200
       
@@ -33,7 +33,7 @@ describe 'Test API routes' do
   end
 
   describe 'mbti tests' do
-    it 'should give correct question' do
+    it 'HAPPY: should give correct question' do
       MBTI_QUESTION_ID.each do |id|
         correct_answer = TravellingSuggestions::Representer::MBTIQuestion.new(
           TravellingSuggestions::Repository::MBTIQuestions.find_id(id)
@@ -56,6 +56,27 @@ describe 'Test API routes' do
     end
   end
 
+  describe 'calculate mbti result' do
+    it 'HAPPY: should calculate correct result' do
+      VALID_MBTI_QUESTION_PAIR.each_with_index do |question_pair, index|
+        get "/api/v1/mbti_test/result?" + question_pair
+        _(last_response.status).must_equal 200
+
+        mbti_result = JSON.parse(last_response.body)
+
+        _(mbti_result['personalities']).must_equal CORRECT_MBTI_QUESTION_RESULT[index]
+      end
+    end
+
+    it 'SAD: should block invalid mbti id' do
+      INVALID_MBTI_QUESTION_PAIR.each do |question_pair|
+        get "/api/v1/mbti_test/result?" + question_pair
+
+        _(last_response.status).must_equal 400
+      end
+    end
+  end
+
   describe 'user page' do
     before do
       # Constructs a valid user profile
@@ -64,7 +85,7 @@ describe 'Test API routes' do
       end
     end
 
-    it 'should fetch user info on /user' do
+    it 'HAPPY: should fetch user info on /user' do
       VALID_NICKNAMES.each do |nickname|
         correct_answer = TravellingSuggestions::Representer::User.new(
           TravellingSuggestions::Repository::Users.find_name(nickname)
@@ -81,7 +102,7 @@ describe 'Test API routes' do
       end
     end
 
-    it 'should not allow invalid user names' do
+    it 'SAD: should not allow invalid user names' do
       INVALID_NICKNAMES.each do |nickname|
         post "/api/v1/user/construct_profile?nickname=#{nickname}&mbti=ENFJ"
 
@@ -89,7 +110,7 @@ describe 'Test API routes' do
       end
     end
 
-    it 'should allow correct user login' do
+    it 'SAD: should allow correct user login' do
       VALID_NICKNAMES.each do |nickname|
         post "/api/v1/user/submit_login?nickname=#{nickname}"
 
@@ -97,7 +118,7 @@ describe 'Test API routes' do
       end
     end
 
-    it 'should not allow incorrect user login' do
+    it 'SAD: should not allow incorrect user login' do
       INVALID_NICKNAMES.each do |nickname|
         post "/api/v1/user/submit_login?nickname=#{nickname}"
 

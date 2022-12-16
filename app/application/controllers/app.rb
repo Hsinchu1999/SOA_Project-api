@@ -69,8 +69,6 @@ module TravellingSuggestions
           end
 
           routing.on 'mbti_test' do
-            # POST submit_answer / result
-            # GET  question (by id???)
 
             routing.is 'question' do
               # GET a single question by its question id
@@ -108,11 +106,28 @@ module TravellingSuggestions
             end
 
             routing.is 'result' do
-              if session[:retry_username] == true
-                # incomplete
-                puts 'give some warning here by flash'
+              routing.get do
+                params = routing.params
+                result = Request::EncodedMBTIScore.new(params).call()
+
+                # Check mbti submit validity
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+                
+                result = Service::CalculateMBTIScore.new.call(routing.params)
+
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+
+                http_response = Representer::HTTPResponse.new(result.value!)
+                response.status = http_response.http_status_code
+                Representer::MBTIScore.new(result.value!.message).to_json
+
               end
-              # view 'mbti_test_result'
             end
             routing.is 'recommendation' do
               # view 'recommendation'
@@ -136,6 +151,7 @@ module TravellingSuggestions
 
               http_response = Representer::HTTPResponse.new(result.value!)
               response.status = http_response.http_status_code
+              puts result.value!.message
               Representer::User.new(result.value!.message).to_json
             end
 
