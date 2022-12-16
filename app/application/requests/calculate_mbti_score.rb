@@ -21,7 +21,7 @@ module TravellingSuggestions
         Failure(
           Response::ApiResult.new(
             status: :bad_request,
-            message: 'Incorrect mbti test result'
+            message: 'Incorrect mbti question id'
           )
         )
       end
@@ -29,7 +29,8 @@ module TravellingSuggestions
       def rule
         @params.each do |key, value|
           raise StandardError unless key !~ /\D/
-          raise StandardError unless key != '0'
+          raise StandardError unless key.to_i >= TravellingSuggestions::App.config.MBTI_QUESTION_MIN_ID.to_i
+          raise StandardError unless key.to_i <= TravellingSuggestions::App.config.MBTI_QUESTION_MAX_ID.to_i
         end
 
         @params
