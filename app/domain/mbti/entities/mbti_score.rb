@@ -10,9 +10,12 @@ module TravellingSuggestions
     # An Entity object to calculate MBTI score
     class MBTIScore
 
+      attr_accessor :personalities
+
       def initialize(questions, answers)
         @questions = questions
         @answers = answers
+        @personalities = nil
       end
 
       def mbti_type
@@ -58,7 +61,7 @@ module TravellingSuggestions
           personalities += 'P'
         end
 
-        personalities
+        @personalities = personalities
       end
     end
   end

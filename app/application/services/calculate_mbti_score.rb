@@ -33,7 +33,9 @@ module TravellingSuggestions
           value
         end
 
-        Entity::MBTIScore.new(questions, answers).mbti_type
+        result = Entity::MBTIScore.new(questions, answers)
+        result.mbti_type
+        result
       end
     end
   end
