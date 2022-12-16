@@ -19,7 +19,7 @@ module TravellingSuggestions
         Failure(
           Response::ApiResult.new(
             status: :not_found,
-            message: 'Could not fetch mbti question from database'
+            message: 'Could not calculate mbti score'
           )
         )
       end
