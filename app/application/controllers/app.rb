@@ -88,6 +88,35 @@ module TravellingSuggestions
               end
             end
 
+            routing.is 'question_set' do
+              # GET a set (array) of mbti question id for a complete mbti test
+              routing.get do
+                set_size = routing.params['set_size']
+                
+                result = Request::EncodedMBTIQuestionSet.new(
+                  set_size:
+                ).call()
+
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+
+                set_size = set_size.to_i
+                result = Service::ListMBTIQuestionSet.new.call(
+                  set_size:
+                )
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+
+                http_response = Representer::HTTPResponse.new(result.value!)
+                response.status = http_response.http_status_code
+                Representer::MBTIQuestionSet.new(result.value!.message).to_json
+              end
+            end
+
             routing.is 'submit_answer' do
               # accepts submitted mbti answers
               routing.post do

@@ -77,6 +77,24 @@ describe 'Test API routes' do
     end
   end
 
+  describe 'generate mbti question set' do
+    it 'HAPPY: should give a set of mbti question ids' do
+      VALID_MBTI_QUESTION_SET_SIZE.each do |set_size|
+        get "/api/v1/mbti_test/question_set?set_size=" + set_size.to_s
+
+        _(last_response.status).must_equal 200
+      end
+    end
+
+    it 'SAD: should block invalid mbti question set size' do
+      INVALID_MBTI_QUESTION_SET_SIZE.each do |set_size|
+        get "/api/v1/mbti_test/question_set?set_size=" + set_size
+
+        _(last_response.status).must_equal 400
+      end
+    end
+  end
+
   describe 'user page' do
     before do
       # Constructs a valid user profile
