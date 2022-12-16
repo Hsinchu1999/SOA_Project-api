@@ -56,6 +56,27 @@ describe 'Test API routes' do
     end
   end
 
+  describe 'calculate mbti result' do
+    it 'should calculate correct result' do
+      VALID_MBTI_QUESTION_PAIR.each_with_index do |question_pair, index|
+        get "/api/v1/mbti_test/result?" + question_pair
+        _(last_response.status).must_equal 200
+
+        mbti_result = JSON.parse(last_response.body)
+
+        _(mbti_result['personalities']).must_equal CORRECT_MBTI_QUESTION_RESULT[index]
+      end
+    end
+
+    it 'should block invalid mbti id' do
+      INVALID_MBTI_QUESTION_PAIR.each do |question_pair|
+        get "/api/v1/mbti_test/result?" + question_pair
+
+        _(last_response.status).must_equal 400
+      end
+    end
+  end
+
   describe 'user page' do
     before do
       # Constructs a valid user profile
