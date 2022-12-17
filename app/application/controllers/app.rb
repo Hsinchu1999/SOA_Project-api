@@ -73,7 +73,6 @@ module TravellingSuggestions
               # GET a single question by its question id
               routing.get do
                 question_id = routing.params['question_id']
-                puts question_id
                 result = Service::ListMBTIQuestion.new.call(
                   question_id.to_i
                 )
@@ -121,9 +120,7 @@ module TravellingSuggestions
               routing.post do
                 answer = routing.params['score']
                 session[:mbti_answers].push(answer)
-                # puts answer
                 session[:answered_cnt] = session[:answered_cnt] + 1
-                puts session[:answered_cnt]
 
                 if session[:answered_cnt] >= 4
                   routing.redirect '/mbti_test/last'
@@ -135,6 +132,7 @@ module TravellingSuggestions
 
             routing.is 'result' do
               routing.get do
+                # GET mbti result by providing answer
                 params = routing.params
                 result = Request::EncodedMBTIScore.new(params).call
 
@@ -178,7 +176,6 @@ module TravellingSuggestions
 
               http_response = Representer::HTTPResponse.new(result.value!)
               response.status = http_response.http_status_code
-              puts result.value!.message
               Representer::User.new(result.value!.message).to_json
             end
 
