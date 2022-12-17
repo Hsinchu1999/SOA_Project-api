@@ -30,7 +30,7 @@ module TravellingSuggestions
         response.status = result.http_status_code
         result.to_json
       end
-      
+
       routing.on 'api' do
         routing.on 'v1' do
           routing.on 'weather' do
@@ -54,27 +54,15 @@ module TravellingSuggestions
                 http_response = Representer::HTTPResponse.new(result.value!)
                 response.status = http_response.http_status_code
                 Representer::Weather.new(result.value!.message).to_json
-                # case location
-                # when 'hsinchu'
-                #   location = '新竹縣'
-                # when 'taipei'
-                #   location = '臺北市'
-                # end
-                # cwb_weather = TravellingSuggestions::CWB::LocationMapper
-                #               .new(CWB_TOKEN, TravellingSuggestions::CWB::CWBApi)
-                #               .find(location)
-                # view 'weather', locals: { weather: cwb_weather }
               end
             end
           end
 
           routing.on 'mbti_test' do
-
             routing.is 'question' do
               # GET a single question by its question id
               routing.get do
                 question_id = routing.params['question_id']
-                puts question_id
                 result = Service::ListMBTIQuestion.new.call(
                   question_id.to_i
                 )
@@ -92,10 +80,10 @@ module TravellingSuggestions
               # GET a set (array) of mbti question id for a complete mbti test
               routing.get do
                 set_size = routing.params['set_size']
-                
+
                 result = Request::EncodedMBTIQuestionSet.new(
                   set_size:
-                ).call()
+                ).call
 
                 if result.failure?
                   failed = Representer::HTTPResponse.new(result.failure)
@@ -122,9 +110,7 @@ module TravellingSuggestions
               routing.post do
                 answer = routing.params['score']
                 session[:mbti_answers].push(answer)
-                # puts answer
                 session[:answered_cnt] = session[:answered_cnt] + 1
-                puts session[:answered_cnt]
 
                 if session[:answered_cnt] >= 4
                   routing.redirect '/mbti_test/last'
@@ -136,15 +122,16 @@ module TravellingSuggestions
 
             routing.is 'result' do
               routing.get do
+                # GET mbti result by providing answer
                 params = routing.params
-                result = Request::EncodedMBTIScore.new(params).call()
+                result = Request::EncodedMBTIScore.new(params).call
 
                 # Check mbti submit validity
                 if result.failure?
                   failed = Representer::HTTPResponse.new(result.failure)
                   routing.halt failed.http_status_code, failed.to_json
                 end
-                
+
                 result = Service::CalculateMBTIScore.new.call(routing.params)
 
                 if result.failure?
@@ -155,7 +142,6 @@ module TravellingSuggestions
                 http_response = Representer::HTTPResponse.new(result.value!)
                 response.status = http_response.http_status_code
                 Representer::MBTIScore.new(result.value!.message).to_json
-
               end
             end
             routing.is 'recommendation' do
@@ -180,21 +166,20 @@ module TravellingSuggestions
 
               http_response = Representer::HTTPResponse.new(result.value!)
               response.status = http_response.http_status_code
-              puts result.value!.message
               Representer::User.new(result.value!.message).to_json
             end
 
             routing.is 'construct_profile' do
               nickname = routing.params['nickname']
               mbti = routing.params['mbti']
-              result = Request::EncodedNewUserNickname.new({ nickname: nickname }).call
+              result = Request::EncodedNewUserNickname.new({ nickname: }).call
               if result.failure?
                 failed = Representer::HTTPResponse.new(result.failure)
                 routing.halt failed.http_status_code, failed.to_json
               end
 
               result = Service::AddUser.new.call(
-                nickname: nickname,
+                nickname:,
                 mbti:
               )
               if result.failure?
@@ -211,7 +196,7 @@ module TravellingSuggestions
               routing.post do
                 nickname = routing.params['nickname']
                 result = Service::ListUser.new.call(
-                  nickname: nickname
+                  nickname:
                 )
                 if result.failure?
                   failed = Representer::HTTPResponse.new(result.failure)

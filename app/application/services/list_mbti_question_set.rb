@@ -26,19 +26,19 @@ module TravellingSuggestions
 
         question_ids.each do |question_id|
           mbti_question = Repository::ForMBTI.klass(Entity::MBTIQuestion).find_id(question_id)
-          if mbti_question.section == 'JP'
+          case mbti_question.section
+          when 'JP'
             jp_section.append(mbti_question)
-          elsif mbti_question.section == 'SN'
+          when 'SN'
             sn_section.append(mbti_question)
-          elsif mbti_question.section == 'EI'
+          when 'EI'
             ei_section.append(mbti_question)
           else
             tf_section.append(mbti_question)
           end
         end
-        Success([{ei: ei_section, jp: jp_section, sn: sn_section, tf: tf_section}, set_size])
-
-      rescue  StandardError
+        Success([{ ei: ei_section, jp: jp_section, sn: sn_section, tf: tf_section }, set_size])
+      rescue StandardError
         Failure(
           Response::ApiResult.new(
             status: :internal_error,
@@ -52,9 +52,9 @@ module TravellingSuggestions
         set_size = input[1]
         selected = []
 
-        sections.each do |section_name, section|
+        sections.each do |_section_name, section|
           num_to_pick = set_size
-          while num_to_pick > 0 do
+          while num_to_pick.positive?
             chosen_index = rand(section.length)
             selected.append(section[chosen_index].id)
             section.delete_at(chosen_index)

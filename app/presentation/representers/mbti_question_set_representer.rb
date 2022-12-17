@@ -8,8 +8,8 @@ module TravellingSuggestions
         @question_ids = question_ids
       end
 
-      def to_json
-        {question_set: @question_ids}.to_json
+      def to_json(*_args)
+        { question_set: @question_ids }.to_json
       end
     end
   end

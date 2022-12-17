@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../helpers/spec_helper'
 require_relative '../helpers/vcr_helper'
 require_relative '../helpers/database_helper'
@@ -25,10 +27,10 @@ describe 'Test API routes' do
     it 'HAPPY: should successfully return root information' do
       get '/'
       _(last_response.status).must_equal 200
-      
+
       message = JSON.parse(last_response.body)
 
-      _(message['message']).must_equal "TravellingSuggestions API v1 at /api/v1/ in test mode"
+      _(message['message']).must_equal 'TravellingSuggestions API v1 at /api/v1/ in test mode'
     end
   end
 
@@ -40,7 +42,7 @@ describe 'Test API routes' do
         ).to_json
         correct_answer = JSON.parse(correct_answer)
 
-        get "/api/v1/mbti_test/question?question_id=#{id.to_s}"
+        get "/api/v1/mbti_test/question?question_id=#{id}"
         _(last_response.status).must_equal 200
 
         mbti_question = JSON.parse(last_response.body)
@@ -59,7 +61,7 @@ describe 'Test API routes' do
   describe 'calculate mbti result' do
     it 'HAPPY: should calculate correct result' do
       VALID_MBTI_QUESTION_PAIR.each_with_index do |question_pair, index|
-        get "/api/v1/mbti_test/result?" + question_pair
+        get "/api/v1/mbti_test/result?#{question_pair}"
         _(last_response.status).must_equal 200
 
         mbti_result = JSON.parse(last_response.body)
@@ -70,7 +72,7 @@ describe 'Test API routes' do
 
     it 'SAD: should block invalid mbti id' do
       INVALID_MBTI_QUESTION_PAIR.each do |question_pair|
-        get "/api/v1/mbti_test/result?" + question_pair
+        get "/api/v1/mbti_test/result?#{question_pair}"
 
         _(last_response.status).must_equal 400
       end
@@ -80,7 +82,7 @@ describe 'Test API routes' do
   describe 'generate mbti question set' do
     it 'HAPPY: should give a set of mbti question ids' do
       VALID_MBTI_QUESTION_SET_SIZE.each do |set_size|
-        get "/api/v1/mbti_test/question_set?set_size=" + set_size.to_s
+        get "/api/v1/mbti_test/question_set?set_size=#{set_size}"
 
         _(last_response.status).must_equal 200
       end
@@ -88,7 +90,7 @@ describe 'Test API routes' do
 
     it 'SAD: should block invalid mbti question set size' do
       INVALID_MBTI_QUESTION_SET_SIZE.each do |set_size|
-        get "/api/v1/mbti_test/question_set?set_size=" + set_size
+        get "/api/v1/mbti_test/question_set?set_size=#{set_size}"
 
         _(last_response.status).must_equal 400
       end
@@ -144,6 +146,4 @@ describe 'Test API routes' do
       end
     end
   end
-
 end
-
