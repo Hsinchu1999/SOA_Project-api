@@ -54,16 +54,6 @@ module TravellingSuggestions
                 http_response = Representer::HTTPResponse.new(result.value!)
                 response.status = http_response.http_status_code
                 Representer::Weather.new(result.value!.message).to_json
-                # case location
-                # when 'hsinchu'
-                #   location = '新竹縣'
-                # when 'taipei'
-                #   location = '臺北市'
-                # end
-                # cwb_weather = TravellingSuggestions::CWB::LocationMapper
-                #               .new(CWB_TOKEN, TravellingSuggestions::CWB::CWBApi)
-                #               .find(location)
-                # view 'weather', locals: { weather: cwb_weather }
               end
             end
           end
