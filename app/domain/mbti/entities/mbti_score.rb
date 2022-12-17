@@ -9,7 +9,6 @@ module TravellingSuggestions
   module Entity
     # An Entity object to calculate MBTI score
     class MBTIScore
-
       attr_accessor :personalities
 
       def initialize(questions, answers)
@@ -19,7 +18,7 @@ module TravellingSuggestions
       end
 
       def mbti_type
-        scores = {E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0}
+        scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 }
         personalities = ''
         @questions.each_with_index do |question, index|
           answer = @answers[index]
@@ -35,29 +34,29 @@ module TravellingSuggestions
           end
         end
 
-        if scores[:E] > scores[:I]
-          personalities += 'E'
-        else
-          personalities += 'I'
-        end
+        personalities += if scores[:E] > scores[:I]
+                           'E'
+                         else
+                           'I'
+                         end
 
-        if scores[:S] > scores[:N]
-          personalities += 'S'
-        else
-          personalities += 'N'
-        end
+        personalities += if scores[:S] > scores[:N]
+                           'S'
+                         else
+                           'N'
+                         end
 
-        if scores[:T] > scores[:F]
-          personalities += 'T'
-        else
-          personalities += 'F'
-        end
+        personalities += if scores[:T] > scores[:F]
+                           'T'
+                         else
+                           'F'
+                         end
 
-        if scores[:J] > scores[:P]
-          personalities += 'J'
-        else
-          personalities += 'P'
-        end
+        personalities += if scores[:J] > scores[:P]
+                           'J'
+                         else
+                           'P'
+                         end
 
         @personalities = personalities
       end
