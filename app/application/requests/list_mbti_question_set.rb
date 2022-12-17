@@ -30,7 +30,7 @@ module TravellingSuggestions
         set_size = @params[:set_size]
         raise StandardError unless set_size !~ /\D/
         raise StandardError unless set_size.to_i <= 11
-        raise StandardError unless set_size.to_i > 0
+        raise StandardError unless set_size.to_i.positive?
 
         set_size
       end

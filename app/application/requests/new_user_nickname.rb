@@ -29,7 +29,7 @@ module TravellingSuggestions
 
       def rule
         raise StandardError unless @params[:nickname].count('^a-zA-Z0-9_').zero?
-        raise StandardError unless @params[:nickname].length > 0
+        raise StandardError unless @params[:nickname].length.positive?
 
         @params
       end

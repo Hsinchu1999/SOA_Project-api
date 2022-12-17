@@ -27,7 +27,7 @@ module TravellingSuggestions
       end
 
       def rule
-        @params.each do |key, value|
+        @params.each do |key, _value|
           raise StandardError unless key !~ /\D/
           raise StandardError unless key.to_i >= TravellingSuggestions::App.config.MBTI_QUESTION_MIN_ID.to_i
           raise StandardError unless key.to_i <= TravellingSuggestions::App.config.MBTI_QUESTION_MAX_ID.to_i
