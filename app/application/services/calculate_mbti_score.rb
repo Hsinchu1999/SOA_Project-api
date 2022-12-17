@@ -25,11 +25,11 @@ module TravellingSuggestions
       end
 
       def calculate_score(params)
-        questions = params.map do |key, value|
+        questions = params.map do |key, _value|
           Repository::MBTIQuestions.find_id(key.to_i)
         end
 
-        answers = params.map do |key, value|
+        answers = params.map do |_key, value|
           value
         end
 
