@@ -7,9 +7,9 @@ module TravellingSuggestions
   module Representer
     # Represent about mbti type
     class MBTIScore < Roar::Decorator
-        include Roar::JSON
+      include Roar::JSON
 
-        property :personalities
+      property :personalities
     end
   end
 end
