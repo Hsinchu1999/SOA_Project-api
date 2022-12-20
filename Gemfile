@@ -49,5 +49,9 @@ gem 'dry-monads', '~> 1.4'
 gem 'dry-transaction', '~> 0.13'
 gem 'dry-validation', '~> 1.7'
 
+# Background Worker
+gem 'aws-sdk-sqs', '~> 1'
+gem 'shoryuken', '~> 4'
+
 # Debugging
 gem 'pry'
