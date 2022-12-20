@@ -8,7 +8,7 @@
           null,
           1,
           1,
-          80,
+          81,
           null,
           null
         ]
@@ -110,20 +110,9 @@
           null,
           null,
           null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
           86,
           30,
           null,
-          10,
           10,
           10,
           10,
@@ -173,8 +162,6 @@
           0,
           0,
           0,
-          null,
-          0,
           0,
           null,
           0,
@@ -187,6 +174,7 @@
           null,
           4,
           4,
+          null,
           4,
           4,
           null,
@@ -228,7 +216,6 @@
           0,
           null,
           null,
-          8,
           8,
           8,
           8,
@@ -2557,6 +2544,43 @@
           null
         ]
       },
+      "/home/peter/NTHUISA/SOA/SOA_Project-api/app/infrastructure/messaging/queue.rb": {
+        "lines": [
+          null,
+          null,
+          1,
+          null,
+          1,
+          1,
+          null,
+          1,
+          1,
+          null,
+          1,
+          0,
+          0,
+          null,
+          null,
+          null,
+          null,
+          0,
+          null,
+          null,
+          1,
+          0,
+          null,
+          null,
+          1,
+          0,
+          0,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
       "/home/peter/NTHUISA/SOA/SOA_Project-api/app/presentation/representers/attraction_representer.rb": {
         "lines": [
           null,
@@ -3005,6 +3029,8 @@
           1,
           1,
           1,
+          1,
+          1,
           null,
           null,
           null,
@@ -3049,7 +3075,7 @@
         ]
       }
     },
-    "timestamp": 1671263451
+    "timestamp": 1671547355
   },
   "Minitest": {
     "coverage": {
