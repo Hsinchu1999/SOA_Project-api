@@ -4,6 +4,18 @@ GEM
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
+    aws-eventstream (1.2.0)
+    aws-partitions (1.680.0)
+    aws-sdk-core (3.168.4)
+      aws-eventstream (~> 1, >= 1.0.2)
+      aws-partitions (~> 1, >= 1.651.0)
+      aws-sigv4 (~> 1.5)
+      jmespath (~> 1, >= 1.6.1)
+    aws-sdk-sqs (1.52.1)
+      aws-sdk-core (~> 3, >= 3.165.0)
+      aws-sigv4 (~> 1.1)
+    aws-sigv4 (1.5.2)
+      aws-eventstream (~> 1, >= 1.0.2)
     coderay (1.1.3)
     concurrent-ruby (1.1.10)
     crack (0.4.5)
@@ -87,6 +99,7 @@ GEM
       domain_name (~> 0.5)
     http-form_data (2.3.0)
     ice_nine (0.11.2)
+    jmespath (1.6.2)
     kwalify (0.7.2)
     llhttp-ffi (0.4.0)
       ffi-compiler (~> 1.0)
@@ -127,6 +140,10 @@ GEM
     roda (3.61.0)
       rack
     sequel (5.62.0)
+    shoryuken (4.0.3)
+      aws-sdk-core (>= 2)
+      concurrent-ruby
+      thor
     simplecov (0.21.2)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -154,6 +171,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  aws-sdk-sqs (~> 1)
   dry-monads (~> 1.4)
   dry-struct (~> 1)
   dry-transaction (~> 0.13)
@@ -176,6 +194,7 @@ DEPENDENCIES
   roar
   roda (~> 3)
   sequel (~> 5.49)
+  shoryuken (~> 4)
   simplecov (~> 0)
   sqlite3
   vcr (~> 6)
