@@ -5,10 +5,9 @@ require 'json'
 
 module TravellingSuggestions
   module Request
-    # A Request object for a new user nickname
-    class EncodedNewUserNickname
+    # A Request object for calculating mbti score
+    class EncodedMBTIQuestionSet
       include Dry::Monads::Result::Mixin
-      NICKNAME_REGEX = %r{/^\w+$/}
 
       def initialize(params)
         @params = params
@@ -21,17 +20,19 @@ module TravellingSuggestions
       rescue StandardError
         Failure(
           Response::ApiResult.new(
-            status: :forbidden,
-            message: 'Invalid nickname'
+            status: :bad_request,
+            message: 'Incorrect mbti question size input'
           )
         )
       end
 
       def rule
-        raise StandardError unless @params[:nickname].count('^a-zA-Z0-9_').zero?
-        raise StandardError unless @params[:nickname].length.positive?
+        set_size = @params[:set_size]
+        raise StandardError unless set_size !~ /\D/
+        raise StandardError unless set_size.to_i <= 11
+        raise StandardError unless set_size.to_i.positive?
 
-        @params
+        set_size
       end
     end
   end
