@@ -1,2 +1,2 @@
 queues:
-- https://sqs.ap-northeast-1.amazonaws.com/931291873492/SOA_TSP_queue
+  - https://sqs.ap-northeast-1.amazonaws.com/931291873492/SOA_TSP_queue
