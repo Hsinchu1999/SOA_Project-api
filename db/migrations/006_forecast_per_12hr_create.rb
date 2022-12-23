@@ -8,8 +8,8 @@ Sequel.migration do
       primary_key :id
 
       Integer :pop
-      Integer :minT
-      Integer :maxT
+      Integer :min_temp
+      Integer :max_temp
 
       DateTime :created_at
       DateTime :updated_at
