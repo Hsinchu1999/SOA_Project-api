@@ -16,7 +16,7 @@ module TravellingSuggestions
         Entity::Attraction.new(
           id: db_record.id,
           added_time: db_record.created_at.to_s,
-          region: region_entity,
+          in_region: region_entity,
           indoor_or_outdoor: db_record.indoor_or_outdoor.to_sym,
           main_activity: db_record.main_activity,
           staying_time: db_record.staying_time,
@@ -34,8 +34,10 @@ module TravellingSuggestions
         end
       end
 
-      def self.db_find_or_create(_entity)
-        nil
+      def self.db_find_or_create(entity)
+        db_attraction = Database::AttractionOrm.find_or_create(entity.to_attr_hash)
+        db_region = Database::RegionOrm.find_or_create(entity.in_region.to_attr_hash)
+        db_attraction.update(in_region_id: db_region.id)
       end
       # to be completed
     end
