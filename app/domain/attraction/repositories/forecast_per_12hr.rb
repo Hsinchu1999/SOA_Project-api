@@ -13,8 +13,8 @@ module TravellingSuggestions
 
         Entity::ForecastPer12Hr.new(
           pop: db_record.pop,
-          min_temp: db_record.min_temp,
-          max_temp: db_record.max_temp
+          minT: db_record.minT,
+          maxT: db_record.maxT
         )
       end
 

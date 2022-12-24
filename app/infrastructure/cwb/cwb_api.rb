@@ -18,7 +18,7 @@ module TravellingSuggestions
       end
 
       def forecast_one_week(location)
-        call_cwb_url('F-D0047-091').parse['records']['locations'][0]['location'].select do |data|
+        all_cwb_url('F-D0047-091').parse['records']['locations'][0]['location'].select do |data|
           data['locationName'] == location
         end
       end
