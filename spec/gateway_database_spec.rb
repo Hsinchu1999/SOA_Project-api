@@ -46,8 +46,12 @@ describe 'Integration Tests of CWB API and Database' do
       region = TravellingSuggestions::Mapper::RegionMapper.new('Taiwan', CITY).find_weather(CWB_TOKEN)
       rebuilt_region = TravellingSuggestions::Repository::Regions.db_find_or_create(region)
       attractions = TravellingSuggestions::Mapper::AttractionNTPCMapper.new(NTPCAPI, region).find(0, 5)
-      rebuilt_attraction = TravellingSuggestions::Repository::Attractions.db_find_or_create(attractions[0])
-      _(rebuilt_attraction.name).must_equal attractions[0].name
+      rebuilt_attraction0 = TravellingSuggestions::Repository::Attractions.db_find_or_create(attractions[0])
+      rebuilt_attraction1 = TravellingSuggestions::Repository::Attractions.db_find_or_create(attractions[1])
+      _(rebuilt_attraction0.name).must_equal attractions[0].name
+      _(rebuilt_attraction0.in_region.city).must_equal attractions[0].in_region.city
+      _(rebuilt_attraction0.notes).must_equal attractions[0].notes
+      _(rebuilt_attraction1.contact).must_equal attractions[1].contact
     end
   end
 end
