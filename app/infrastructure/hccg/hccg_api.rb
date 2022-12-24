@@ -4,30 +4,19 @@ require 'http'
 
 module TravellingSuggestions
   # Library for Github Web API
-  module CWB
-    # Object for accessing cwb api
-    class CWBApi
-      def initialize(token)
-        @cwb_token = token
-      end
+  module HsinChuCityGovernment
+    # Object for accessing HCCG api
+    class HCCGApi
 
-      def forecast_36_hr(location)
-        call_cwb_url('F-C0032-001').parse['records']['location'].select do |data|
-          data['locationName'] == location
-        end
-      end
-
-      def forecast_one_week(location)
-        call_cwb_url('F-D0047-091').parse['records']['locations'][0]['location'].select do |data|
-          data['locationName'] == location
-        end
+      def attractions(page, size)
+        call_hccg_url(page, size).parse
       end
 
       private
 
-      def call_cwb_url(functionality)
+      def call_hccg_url(skip, take)
         result =
-          HTTP.get("https://opendata.cwb.gov.tw/api/v1/rest/datastore/#{functionality}?Authorization=#{@cwb_token}")
+          HTTP.get("https://opendata.hccg.gov.tw/API/v3/Rest/OpenData/5A07674C217C3EC7?take=#{take}&skip=#{skip}")
 
         Response.new(result).tap do |response|
           raise(response.error) unless response.successful?
