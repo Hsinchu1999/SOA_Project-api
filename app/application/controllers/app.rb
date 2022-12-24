@@ -15,6 +15,7 @@ module TravellingSuggestions
     # plugin :public, root: 'app/views/public'
     # plugin :flash
     plugin :halt
+    plugin :caching
 
     route do |routing|
       # routing.public
@@ -62,6 +63,7 @@ module TravellingSuggestions
             routing.is 'question' do
               # GET a single question by its question id
               routing.get do
+                response.cache_control public: true, max_age: 30
                 question_id = routing.params['question_id']
                 result = Service::ListMBTIQuestion.new.call(
                   question_id.to_i
@@ -79,6 +81,7 @@ module TravellingSuggestions
             routing.is 'question_set' do
               # GET a set (array) of mbti question id for a complete mbti test
               routing.get do
+                response.cache_control public: true, max_age: 30
                 set_size = routing.params['set_size']
 
                 result = Request::EncodedMBTIQuestionSet.new(
@@ -154,6 +157,7 @@ module TravellingSuggestions
             # GET  user / favorites(use list_user service object)
 
             routing.is do
+              response.cache_control public: true, max_age: 30
               nickname = routing.params['nickname']
               result = Service::ListUser.new.call(
                 nickname:
@@ -215,6 +219,7 @@ module TravellingSuggestions
             end
 
             routing.is 'favorites' do
+              response.cache_control public: true, max_age: 30
               nickname = routing.params['nickname']
               result = Service::ListUserFavorites.new.call(
                 nickname:
