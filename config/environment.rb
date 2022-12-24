@@ -32,6 +32,13 @@ module TravellingSuggestions
             entitystore: 'file:_cache/rack/body'
       end
 
+      configure :production do
+        use Rack::Cache,
+            verbose: true,
+            metastore: config.REDISCLOUD_URL + '/0/metastore',
+            entitystore: config.REDISCLOUD_URL + '/0/entitystore'
+      end
+
       use Rack::Session::Cookie, secret: config.SESSION_SECRET
       CWB_TOKEN = config.CWB_TOKEN
       DB = Sequel.connect(ENV.fetch('DATABASE_URL'))
