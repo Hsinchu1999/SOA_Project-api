@@ -41,5 +41,12 @@ describe 'Integration Tests of CWB API and Database' do
       _(rebuilt_forecast1w.sixth_day.pop).must_equal weather.forecast_one_week.day6.pop
       _(rebuilt_forecast1w.seventh_day.pop).must_equal weather.forecast_one_week.day7.pop
     end
+
+    it 'HAPPY: should be able to save attraction from NTPC to database' do
+      region = TravellingSuggestions::Mapper::RegionMapper.new('Taiwan', CITY).find_weather(CWB_TOKEN)
+      attractions = TravellingSuggestions::Mapper::AttractionNTPCMapper.new(NTPCAPI, region).find(0, 5)
+      rebuilt_attraction = TravellingSuggestions::Repository::Attractions.db_find_or_create(attractions[0])
+      _(rebuilt_attraction.name).must_equal attractions[0].name
+    end
   end
 end

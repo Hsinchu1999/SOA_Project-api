@@ -22,15 +22,23 @@ module TravellingSuggestions
     private
 
     def build_entitys(data)
-        data.each {|attraction|
+        data.map do |attraction|
+            
         Entity::Attraction.new(
         name: attraction['Name'],
-        region: @region,
+        in_region: @region,
         type: classes_type(attraction['Class1'], attraction['Class2'], attraction['Class3']),
         notes: attraction['Description'],
-        contact: attraction['Tel']
+        contact: attraction['Tel'],
+        id: nil,
+        added_time: nil,
+        indoor_or_outdoor: nil,
+        main_activity: nil,
+        staying_time: nil,
+        attendants: nil,
+        best_time_to_visit: nil
         )
-        }
+        end
 
     end
 

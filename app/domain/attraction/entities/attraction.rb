@@ -11,20 +11,19 @@ module TravellingSuggestions
       include Dry.Types
 
       attribute :name,                  Strict::String
-      attribute :id,                    Strict::Integer
-      attribute :added_time,            Strict::String
-      attribute :region,                Region
-      attribute :indoor_or_outdoor,     Strict::Symbol
-      attribute :main_activity,         Strict::String
-      attribute :staying_time,          Strict::String
+      attribute :id,                    Integer.optional
+      attribute :in_region,                Region
+      attribute :indoor_or_outdoor,     Strict::Symbol.optional
+      attribute :main_activity,         Strict::String.optional
+      attribute :staying_time,          Strict::String.optional
       attribute :type,                  Strict::String
-      attribute :attendants,            Strict::Integer
+      attribute :attendants,            Integer.optional
       attribute :notes,                 Strict::String
       attribute :contact,               Strict::String
-      attribute :best_time_to_visit,    Strict::String
+      attribute :best_time_to_visit,    Strict::String.optional
 
       def to_attr_hash
-        to_hash.except(:id)
+        to_hash.except(:id,:in_region)
       end
     end
   end

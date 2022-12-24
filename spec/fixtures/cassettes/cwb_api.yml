@@ -5863,4 +5863,69 @@ http_interactions:
 
         '
   recorded_at: Fri, 23 Dec 2022 16:14:33 GMT
+- request:
+    method: get
+    uri: https://data.ntpc.gov.tw/api/datasets/b3a30a19-4b89-4da2-8d99-18200dc5dfde/json?page=0&size=5
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Connection:
+      - close
+      Host:
+      - data.ntpc.gov.tw
+      User-Agent:
+      - http.rb/5.1.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 24 Dec 2022 09:05:55 GMT
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Security-Policy:
+      - 'default-src ''self'' data: www.google-analytics.com www.google.com clients1.google.com
+        raw.githubusercontent.com maxcdn.bootstrapcdn.com use.fontawesome.com; script-src
+        ''self'' data: ''unsafe-inline'' ''unsafe-eval'' www.google.com www.googletagmanager.com
+        cse.google.com www.google-analytics.com www.gstatic.com www.recaptcha.net;
+        style-src ''self'' data: ''unsafe-inline'' ''unsafe-eval'' www.google.com
+        www.gstatic.com maxcdn.bootstrapcdn.com use.fontawesome.com fonts.googleapis.com;
+        worker-src ''self'' data: blob:; frame-src *; font-src fonts.gstatic.com;
+        img-src validator.swagger.io ''self'' data:;'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, Content-Type, Accept, Origin, Authorization
+      Access-Control-Allow-Methods:
+      - GET, POST, PUT, DELETE, PATCH, OPTIONS
+      Content-Type:
+      - application/json
+      Connection:
+      - close
+      Set-Cookie:
+      - TS01232bc6=012479d1bfc8275a9ca69af16c0c713a978f4a208bb0f5f3083e68a2a9685a26f83fc74022b3d5deb63434023fdc3707f8896847ca;
+        Path=/; Domain=.data.ntpc.gov.tw
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: '[{"Id":"C1_382000000A_110083","Name":"雙溪打鐵舖","Zone":"","Toldescribe":"台灣的打鐵店所剩不多，但是在雙溪，還有一間百年打鐵舖！在台灣早期的農業社會，無論是種田使用的鐮刀、鋤頭，亦或是家庭常使用的用具─菜刀、剪刀等等，只要是與鐵具相關，都需要打鐵舖敲敲打打精工細活的製做出來。　到「雙溪打鐵舖」一探究竟！這間鐵舖，仍舊發出老師傅在店裡敲敲打打的聲響。門上掛著許多的鐮刀、鋤頭、豬扒等早期的農業器具，這間打鐵舖已有百年歷史，不到十坪的空間內，器材上盡是沾滿了黑色的灰燼，最古老的打鐵爐灶呈現在眼前。現代社會，使用的是機器大量製造的鐵具，打鐵舖行業漸漸沒落，時代的轉變，帶來了新的事物，打鐵舖已變成舊有的、懷念的產業。想見識手工鐵具的生產過程，唯有在這裡，才能見識到吧。","Description":"早期農業時代，不管是種田(鋤頭、鐮刀…)、捕魚(捕鰻苗…)的器材或是家庭用具(菜刀、剪刀…)，以及相關的農業用具都需要打鐵舖來製作。雙溪原本有兩家打鐵舖，但由於幾次水災，設備淹毀，目前只剩下一家打鐵舖尚在打製鐵器。","Tel":"886-2-24931111","Add":"新北市227雙溪區中華路7號","Zipcode":"227","Travellinginfo":"【大眾運輸】搭乘火車至雙溪站下，出站往西走自強路朝新基南街前進，接著朝陽街直行接中華路即可抵達。【自行開車】1.從東西向快速公路萬里瑞濱線/台62線的瑞芳交流道(瑞芳/八堵)號出口下交流道。2.於瑞芳街向左微轉走一坑路。3.從明燈路三段微向左轉，變成明燈路二段/102縣道。4.於瑞侯公路/北37鄉道向右轉。5.接著走瑞雙公路/102縣道，於新基大橋/自強路/102甲縣道向左轉，...","Opentime":"無固定營業，早上打鐵機率較高","Map":"","Gov":"382000000A","Px":"121.86594","Py":"25.03655","Orgclass":"","Class1":"5","Class2":"","Class3":"","Level":"","Website":"","Parkinginfo":"","Parkinginfo_px":"","Parkinginfo_py":"","Ticketinfo":"","Remarks":"","Keyword":"","Changetime":"2021/04/21
+        12:07:27"},{"Id":"C1_382000000A_110453","Name":"橫山梯田","Zone":"","Toldescribe":"位於大坑溪中游的橫山梯田，是三芝最著名的梯田地景。沿著三芝市區道路往橫山方向走，一片田野風光就映入眼簾。橫山舊名橫山崁，是一個高低落差明顯的丘陵帶，早期三芝背山面海，平原不廣，為了爭取到更大的耕種面積，先民開墾時便順著地形，開闢成一階階的梯田。依山勢蜿蜒的梯田，形成了層層相疊的梯田地景，再加上公路以及河流交錯其間，構築出了幾何圖形般的美麗風景，無論站在哪一個角度，都可以觀賞到不同的風景。原本橫山梯田是以種稻作為主，但後來因考量經濟效益，改種三芝區最有名的茭白筍和山藥。橫山也是三芝「美人腿」茭白筍的家鄉，潔白香脆的茭白筍已經成為三芝知名的美食，好山好水好土壤蘊育出鮮美甜脆的茭白筍，白淨光滑亦有「三芝美人腿」的美稱。秋風吹拂下，綠色波浪般的茭白筍田，搭配隨著水流活力轉動的水車，透露著一股悠然自得的鄉野風情。休閒假日不妨來一趟三芝美人腿之旅，享受採筍、品嚐茭白筍特色風味餐的悠閒時光。","Description":"位於大坑溪中游的橫山梯田，是三芝最著名的梯田地景。沿著三芝市區道路往橫山方向走，一片田野風光就映入眼簾。橫山舊名橫山崁，是一個高低落差明顯的丘陵帶，早期三芝背山面海，平原不廣，為了爭取到更大的耕種面積，先民開墾時便順著地形，開闢成一階階的梯田。依山勢蜿蜒的梯田，形成了層層相疊的梯田地景，再加上公路以及河流交錯其間，構築出了幾何圖形般的美麗風景，無論站在哪一個角度，都可以觀賞到不同的風景。原本橫山梯田是以種稻作為主，但後來因考量經濟效益，改種三芝區最有名的茭白筍和山藥。橫山也是三芝「美人腿」茭白筍的家鄉，潔白香脆的茭白筍已經成為三芝知名的美食，好山好水好土壤蘊育出鮮美甜脆的茭白筍，白淨光滑亦有「三芝美人腿」的美稱。秋風吹拂下，綠色波浪般的茭白筍田，搭配隨著水流活力轉動的水車，透露著一股悠然自得...","Tel":"886-2-29603456","Add":"新北市207萬里區茂長里、橫山里","Zipcode":"207","Travellinginfo":"","Opentime":"詳見官網或電話洽詢","Map":"","Gov":"382000000A","Px":"121.52273","Py":"25.25098","Orgclass":"","Class1":"9","Class2":"","Class3":"","Level":"","Website":"","Parkinginfo":"","Parkinginfo_px":"","Parkinginfo_py":"","Ticketinfo":"","Remarks":"","Keyword":"","Changetime":"2021/10/20
+        11:38:00"},{"Id":"C1_382000000A_403329","Name":"中角灣衝浪運動園區","Zone":"","Toldescribe":"運動觀光新景點在金山區中角國小與金山高中，校園內設置衝浪學苑及戶外衝浪練習區，更可串聯至鄰近的中角灣衝浪中心，中心提供衝浪、立槳SUP課程及體驗，發展金山區衝浪水域運動特色，為在地觀光旅遊帶來全新運動體驗的元素。
+        校園衝浪學苑作為新北市第一的衝浪示範學校，同時兼具衝浪運動選手訓練培育，建立國小、國中、高中的三級培訓體制；夏日推出的夏令營活動，是市民、親子家庭消暑的最佳首選、每每推出都搶購一空，讓各年齡層的民眾都能接觸到衝浪及SUP的水上及陸上教學體驗，享受多采多姿且安全的水域遊憩。","Description":"運動觀光新景點在金山區中角國小與金山高中，校園內設置衝浪學苑及戶外衝浪練習區，更可串聯至鄰近的中角灣衝浪中心，中心提供衝浪、立槳SUP課程及體驗，發展金山區衝浪水域運動特色，為在地觀光旅遊帶來全新運動體驗的元素。
+        校園衝浪學苑作為新北市第一的衝浪示範學校，同時兼具衝浪運動選手訓練培育，建立國小、國中、高中的三級培訓體制；夏日推出的夏令營活動，是市民、親子家庭消暑的最佳首選、每每推出都搶購一空，讓各年齡層的民眾都能接觸到衝浪及SUP的水上及陸上教學體驗，享受多采多姿且安全的水域遊憩。","Tel":"886-2-29603456","Add":"新北市208金山區海興路49號","Zipcode":"208","Travellinginfo":"","Opentime":"詳見官網或電話洽詢","Map":"","Gov":"382000000A","Px":"121.6306","Py":"25.23972","Orgclass":"","Class1":"12","Class2":"","Class3":"","Level":"","Website":"","Parkinginfo":"","Parkinginfo_px":"","Parkinginfo_py":"","Ticketinfo":"","Remarks":"","Keyword":"","Changetime":"2021/09/10
+        12:03:25"},{"Id":"C1_382000000A_403338","Name":"松子腳砲臺遺址","Zone":"","Toldescribe":"太平洋戰爭爆發時期，日軍開始積極在殖民地臺灣各重要戰略地點建設堅固的工事，當時八里坌是屬於基隆要塞的西地區，日軍約在西元1941(昭和16)年開始，在松子腳構築起12公分高的兩用加農砲掩體共兩處，也就是松子腳砲臺，另外也在八里坌地區的楓櫃斗湖構築8公分高射砲掩體兩處，皆是利用鋼筋混凝土構築的「永久築城」。
+        根據地方耆老回憶，當時日軍為了要建砲臺，還從庄役場(位於舊城內)鋪設了一條輕便軌道藉以運輸建材，當時15歲到50歲的壯丁都要輪流去作「公工」，也就是完全義務性的勞役。可惜的是，目前遺址多被近代的墳墓及果園所覆蓋，經過縝密的地毯式搜尋，才找到兩處的機槍掩堡，以及一處的迫擊砲陣地。","Description":"太平洋戰爭爆發時期，日軍開始積極在殖民地臺灣各重要戰略地點建設堅固的工事，當時八里坌是屬於基隆要塞的西地區，日軍約在西元1941(昭和16)年開始，在松子腳構築起12公分高的兩用加農砲掩體共兩處，也就是松子腳砲臺，另外也在八里坌地區的楓櫃斗湖構築8公分高射砲掩體兩處，皆是利用鋼筋混凝土構築的「永久築城」。","Tel":"886-2-26102621","Add":"新北市249八里區","Zipcode":"249","Travellinginfo":"【大眾運輸】1.搭乘捷運至關渡站下，轉乘公車紅13或紅22至舊城里站下車即可抵達。2.搭乘捷運至徐匯中學站下，轉乘公車927或928至八里分駐所站下車即可抵達。【自行開車】1.國道1號→於林口交流道(文化一路)出口下交流道，走龜山一路→文化一路→中華路三段→台15線→中山路二段即可抵達。","Opentime":"全年開放","Map":"","Gov":"382000000A","Px":"121.40264","Py":"25.14453","Orgclass":"","Class1":"1","Class2":"","Class3":"","Level":"","Website":"","Parkinginfo":"","Parkinginfo_px":"","Parkinginfo_py":"","Ticketinfo":"","Remarks":"","Keyword":"","Changetime":"2021/10/04
+        10:32:11"},{"Id":"C1_382000000A_110763","Name":"三峽農特產文化館","Zone":"","Toldescribe":"三峽介於大漢溪、三峽溪及橫溪三溪匯流處而得名；三峽地型有豐富的山巒、丘陵地，且因三溪交會，造就出迷人的山林景色，是北部民眾親近山區、休閒放鬆的好去處。位於正義街的三峽農特產文化館則以當地農特產結合在文化為遊憩主題，以人文關懷的角度認識農產品，並積極研究開發出一系列以三峽農特產為主題的特色商品三峽農特產文化館以三峽當地有名之綠竹筍、茶葉為材料，運用專業的產銷連貫監督管理體系，確保耕作、施肥、用藥、加工過程的安全衛生，並致力研發地方伴手禮及特色風味餐飲，將三峽的農特產品結合在地觀光特色。館內設有「營養補給站」、「健康美食坊」和「膳食知識堂」，另外還有營養師特別安排的「營養教育」，希望藉由展示、講解和教學提供民眾健康菜色和飲食新觀念。","Description":"北部最大的團膳供應商以當地有名農特產為材料，研發出一系列以三峽農特產為主題的特色商品，透過農特產文化館，讓遊客可以享受在地美食佳餚。主題館有農特產與達人影片介紹，懷舊風的三峽柑仔店喚起許多人的童年回憶，要是肚子餓了，綠茶蛋捲、碧螺春方塊酥、碧螺春冰淇淋或紅麴黑豬肉香腸，都是別具特色的佳肴等你來大快朵頤一番！","Tel":"886-2-26723868","Add":"新北市237三峽區正義街18號","Zipcode":"237","Travellinginfo":"【大眾運輸】1.搭乘捷運至府中站，轉搭940至大同橋ㄧ站下車，步行即抵達。2.搭乘捷運至頂埔站，轉搭9103、812、藍46至大同橋ㄧ站下車，步行即抵達。【自行開車】1.下三鶯交流道，循復興路直行，接中正路轉正義街即抵。","Opentime":"導覽時間：週一至周五09：00∼16：00、週六09：00∼
+        12：00","Map":"","Gov":"382000000A","Px":"121.36979","Py":"24.91991","Orgclass":"","Class1":"18","Class2":"","Class3":"","Level":"","Website":"","Parkinginfo":"","Parkinginfo_px":"","Parkinginfo_py":"","Ticketinfo":"","Remarks":"","Keyword":"","Changetime":"2021/04/28
+        11:59:08"}]'
+  recorded_at: Sat, 24 Dec 2022 09:06:00 GMT
 recorded_with: VCR 6.1.0

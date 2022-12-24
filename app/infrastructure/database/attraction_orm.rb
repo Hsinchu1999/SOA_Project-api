@@ -19,6 +19,10 @@ module TravellingSuggestions
                    left_key: :attraction_id, right_key: :user_id
 
       plugin :timestamps, update_on_create: true
+      def self.find_or_create(attraction_info)
+        first(name: attraction_info[:name], type: attraction_info[:type],
+              notes: attraction_info[:city], contact: attraction_info[:contact]) || create(attraction_info)
+      end
     end
   end
 end
