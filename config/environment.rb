@@ -22,6 +22,14 @@ module TravellingSuggestions
       configure :development, :test do
         ENV['DATABASE_URL'] = "sqlite://#{config.DB_FILENAME}"
       end
+
+      configure :development do
+        use Rack::Cache,
+            verbose: true,
+            metastore: 'file:_cache/rack/meta',
+            entitystore: 'file:_cache/rack/body'
+      end
+
       use Rack::Session::Cookie, secret: config.SESSION_SECRET
       CWB_TOKEN = config.CWB_TOKEN
       DB = Sequel.connect(ENV.fetch('DATABASE_URL'))
