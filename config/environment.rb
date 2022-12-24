@@ -5,6 +5,8 @@ require 'yaml'
 require 'sequel'
 require 'figaro'
 require 'rack/session'
+require 'rack/cache'
+require 'redis-rack-cache'
 
 module TravellingSuggestions
   # App for Roda routing
@@ -23,7 +25,7 @@ module TravellingSuggestions
         ENV['DATABASE_URL'] = "sqlite://#{config.DB_FILENAME}"
       end
 
-      configure :development do
+      configure :development, :test do
         use Rack::Cache,
             verbose: true,
             metastore: 'file:_cache/rack/meta',
