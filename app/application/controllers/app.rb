@@ -224,6 +224,50 @@ module TravellingSuggestions
               Representer::User.new(result.value!.message).to_json
             end
           end
+
+          routing.on 'recommendation' do
+            routing.is 'attraction_set' do
+              routing.get do
+                response.cache_control public: true, max_age: 30
+                k = routing.params['k']
+                mbti = routing.params['mbti']
+                result = Request::EncodedAttractionSet.new(
+                  k:
+                ).call
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+
+                k = k.to_i
+                result = Service::ListAttractionSet.new.call(
+                  mbti, k
+                )
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+                http_response = Representer::HTTPResponse.new(result.value!)
+                response.status = http_response.http_status_code
+                Representer::AttractionSet.new(result.value!.message).to_json
+              end
+            end
+
+            routing.is 'attraction' do
+              routing.get do
+                response.cache_control public: true, max_age: 30
+                id = routing.params['id'].to_i
+                result = Service::ListAttraction.new.call(id)
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+                http_response = Representer::HTTPResponse.new(result.value!)
+                response.status = http_response.http_status_code
+                Representer::Attraction.new(result.value!.message).to_json
+              end
+            end
+          end
         end
       end
     end
