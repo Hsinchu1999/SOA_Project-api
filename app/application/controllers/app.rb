@@ -1,25 +1,15 @@
 # frozen_string_literal: true
 
 require 'roda'
-# require 'slim'
-# require 'slim/include'
-
-# Slim::Engine.set_options encoding: 'utf-8'
 
 module TravellingSuggestions
   # Web App
   class App < Roda
-    # plugin :render, engine: 'slim', views: 'app/views/views_html'
-    # plugin :assets, css: 'style.css', path: 'app/views/assets'
     plugin :common_logger, $Stderr
-    # plugin :public, root: 'app/views/public'
-    # plugin :flash
     plugin :halt
     plugin :caching
 
     route do |routing|
-      # routing.public
-      # routing.assets
       response['Content-Type'] = 'application/json'
 
       routing.root do
