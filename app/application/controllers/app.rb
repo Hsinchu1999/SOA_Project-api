@@ -267,6 +267,30 @@ module TravellingSuggestions
                 Representer::Attraction.new(result.value!.message).to_json
               end
             end
+
+            routing.is 'result' do
+              routing.get do
+                # GET attraction result from user like/dislike
+                params = routing.params
+                result = Request::EncodedAttraction.new(params).call
+                
+                # Check result submit validity
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+
+                result = Service::UpdateUserFavorites.new.call(routing.params)
+
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+                
+                http_response = Representer::HTTPResponse.new(result.value!)
+                response.status = http_response.http_status_code
+              end
+            end
           end
         end
       end

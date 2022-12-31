@@ -44,7 +44,7 @@ module TravellingSuggestions
         Success(
           Response::ApiResult.new(
             status: :ok,
-            message: user
+            message: 'Success'
           )
         )
       rescue StandardError
