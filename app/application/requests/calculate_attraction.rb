@@ -28,7 +28,7 @@ module TravellingSuggestions
 
       def rule
         @params.each do |key, value|
-          next if key == 'user_id'
+          next if key == 'nickname'
           raise StandardError unless key !~ /\D/
           raise StandardError unless ['like', 'dislike'].include? value
         end
