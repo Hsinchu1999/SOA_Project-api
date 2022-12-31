@@ -5,7 +5,7 @@ require 'json'
 
 module TravellingSuggestions
   module Request
-    # A Request object for calculating mbti score
+    # A Request object for validating updates for user favorites
     class EncodedAttraction
       include Dry::Monads::Result::Mixin
 
@@ -21,13 +21,14 @@ module TravellingSuggestions
         Failure(
           Response::ApiResult.new(
             status: :bad_request,
-            message: 'Incorrect mbti question id'
+            message: 'Incorrect attraction update request url'
           )
         )
       end
 
       def rule
         @params.each do |key, value|
+          next if key == 'user_id'
           raise StandardError unless key !~ /\D/
           raise StandardError unless ['like', 'dislike'].include? value
         end
