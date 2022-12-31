@@ -98,21 +98,6 @@ module TravellingSuggestions
               end
             end
 
-            routing.is 'submit_answer' do
-              # accepts submitted mbti answers
-              routing.post do
-                answer = routing.params['score']
-                session[:mbti_answers].push(answer)
-                session[:answered_cnt] = session[:answered_cnt] + 1
-
-                if session[:answered_cnt] >= 4
-                  routing.redirect '/mbti_test/last'
-                else
-                  routing.redirect '/mbti_test/continue'
-                end
-              end
-            end
-
             routing.is 'result' do
               routing.get do
                 # GET mbti result by providing answer
@@ -136,9 +121,6 @@ module TravellingSuggestions
                 response.status = http_response.http_status_code
                 Representer::MBTIScore.new(result.value!.message).to_json
               end
-            end
-            routing.is 'recommendation' do
-              # view 'recommendation'
             end
           end
 
