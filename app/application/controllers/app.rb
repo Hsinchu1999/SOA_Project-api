@@ -229,19 +229,19 @@ module TravellingSuggestions
             routing.is 'attraction_set' do
               routing.get do
                 response.cache_control public: true, max_age: 30
-                k = routing.params['k']
+                set_size = routing.params['set_size']
                 mbti = routing.params['mbti']
                 result = Request::EncodedAttractionSet.new(
-                  k:
+                  k: set_size
                 ).call
                 if result.failure?
                   failed = Representer::HTTPResponse.new(result.failure)
                   routing.halt failed.http_status_code, failed.to_json
                 end
 
-                k = k.to_i
+                set_size = set_size.to_i
                 result = Service::ListAttractionSet.new.call(
-                  mbti, k
+                  mbti, set_size
                 )
                 if result.failure?
                   failed = Representer::HTTPResponse.new(result.failure)
@@ -256,7 +256,7 @@ module TravellingSuggestions
             routing.is 'attraction' do
               routing.get do
                 response.cache_control public: true, max_age: 30
-                id = routing.params['id'].to_i
+                id = routing.params['attraction_id'].to_i
                 result = Service::ListAttraction.new.call(id)
                 if result.failure?
                   failed = Representer::HTTPResponse.new(result.failure)
