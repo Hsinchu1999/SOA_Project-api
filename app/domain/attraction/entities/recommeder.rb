@@ -14,8 +14,9 @@ module TravellingSuggestions
         @mbti_type = mbti_type
         @attraction_mbti_ratings_list = attraction_mbti_ratings_list
       end
+
       def mbti_top_k(k)
-        @attraction_mbti_ratings_list.sort_by {|transaction| transaction.attribute}
+        @attraction_mbti_ratings_list.sort_by {|attraction_rating| -1*(attraction_rating.send(mbti_type + '_like').to_f / attraction_rating.send(mbti_type + '_seen'))} [0..(k-1)]
       end
  
     end
