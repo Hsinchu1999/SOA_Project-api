@@ -14,9 +14,9 @@ module TravellingSuggestions
         @mbti_type = mbti_type
       end
       def mbti_top_k(k)
+        
       end
-      def data_loader(attraction_id, perference)
-      end
+ 
     end
   end
 end
