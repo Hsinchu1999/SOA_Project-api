@@ -3,7 +3,6 @@
 require 'dry-types'
 require 'dry-struct'
 
-
 module TravellingSuggestions
   module Entity
     # An Entity object to calculate MBTI score
@@ -15,10 +14,11 @@ module TravellingSuggestions
         @attraction_mbti_ratings_list = attraction_mbti_ratings_list
       end
 
-      def mbti_top_k(k)
-        @attraction_mbti_ratings_list.sort_by {|attraction_rating| -1*(attraction_rating.send(mbti_type + '_like').to_f / attraction_rating.send(mbti_type + '_seen'))} [0..(k-1)]
+      def mbti_top_k(topk)
+        @attraction_mbti_ratings_list.sort_by do |attraction_rating|
+          -1 * (attraction_rating.send("#{mbti_type}_like").to_f / attraction_rating.send("#{mbti_type}_seen"))
+        end [0..(topk - 1)]
       end
- 
     end
   end
 end
