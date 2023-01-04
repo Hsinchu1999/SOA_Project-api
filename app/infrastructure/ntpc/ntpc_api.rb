@@ -4,31 +4,20 @@ require 'http'
 
 module TravellingSuggestions
   # Library for Github Web API
-  module CWB
-    # Object for accessing cwb api
-    class CWBApi
-      def initialize(token)
-        @cwb_token = token
-      end
+  module NewTaiPeiCityGovernment
+    # Object for accessing HCCG api
+    class NTPCApi
 
-      def forecast_36_hr(location)
-        call_cwb_url('F-C0032-001').parse['records']['location'].select do |data|
-          data['locationName'] == location
-        end
-      end
-
-      def forecast_one_week(location)
-        call_cwb_url('F-D0047-091').parse['records']['locations'][0]['location'].select do |data|
-          data['locationName'] == location
-        end
+      def attractions(page, size)
+        call_ntpc_url(page, size).parse
       end
 
       private
 
-      def call_cwb_url(functionality)
+      def call_ntpc_url(page, size)
         result =
-          HTTP.get("https://opendata.cwb.gov.tw/api/v1/rest/datastore/#{functionality}?Authorization=#{@cwb_token}")
-
+          HTTP.get("https://data.ntpc.gov.tw/api/datasets/b3a30a19-4b89-4da2-8d99-18200dc5dfde/json?page=#{page}&size=#{size}")
+        
         Response.new(result).tap do |response|
           raise(response.error) unless response.successful?
         end

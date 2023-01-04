@@ -9,7 +9,7 @@ module TravellingSuggestions
     class ForecastPerDay < Dry::Struct
       include Dry.Types
 
-      attribute :pop, Strict::Integer
+      attribute :pop,                 Strict::Integer
       attribute :min_temp,            Strict::Integer
       attribute :max_temp,            Strict::Integer
       def to_attr_hash

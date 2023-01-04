@@ -1,24 +1,15 @@
 # frozen_string_literal: true
 
 require 'roda'
-# require 'slim'
-# require 'slim/include'
-
-# Slim::Engine.set_options encoding: 'utf-8'
 
 module TravellingSuggestions
   # Web App
   class App < Roda
-    # plugin :render, engine: 'slim', views: 'app/views/views_html'
-    # plugin :assets, css: 'style.css', path: 'app/views/assets'
     plugin :common_logger, $Stderr
-    # plugin :public, root: 'app/views/public'
-    # plugin :flash
     plugin :halt
+    plugin :caching
 
     route do |routing|
-      # routing.public
-      # routing.assets
       response['Content-Type'] = 'application/json'
 
       routing.root do
@@ -62,6 +53,7 @@ module TravellingSuggestions
             routing.is 'question' do
               # GET a single question by its question id
               routing.get do
+                response.cache_control public: true, max_age: 30
                 question_id = routing.params['question_id']
                 result = Service::ListMBTIQuestion.new.call(
                   question_id.to_i
@@ -79,6 +71,7 @@ module TravellingSuggestions
             routing.is 'question_set' do
               # GET a set (array) of mbti question id for a complete mbti test
               routing.get do
+                response.cache_control public: true, max_age: 30
                 set_size = routing.params['set_size']
 
                 result = Request::EncodedMBTIQuestionSet.new(
@@ -102,21 +95,6 @@ module TravellingSuggestions
                 http_response = Representer::HTTPResponse.new(result.value!)
                 response.status = http_response.http_status_code
                 Representer::MBTIQuestionSet.new(result.value!.message).to_json
-              end
-            end
-
-            routing.is 'submit_answer' do
-              # accepts submitted mbti answers
-              routing.post do
-                answer = routing.params['score']
-                session[:mbti_answers].push(answer)
-                session[:answered_cnt] = session[:answered_cnt] + 1
-
-                if session[:answered_cnt] >= 4
-                  routing.redirect '/mbti_test/last'
-                else
-                  routing.redirect '/mbti_test/continue'
-                end
               end
             end
 
@@ -144,9 +122,6 @@ module TravellingSuggestions
                 Representer::MBTIScore.new(result.value!.message).to_json
               end
             end
-            routing.is 'recommendation' do
-              # view 'recommendation'
-            end
           end
 
           routing.on 'user' do
@@ -154,6 +129,7 @@ module TravellingSuggestions
             # GET  user / favorites(use list_user service object)
 
             routing.is do
+              response.cache_control public: true, max_age: 30
               nickname = routing.params['nickname']
               result = Service::ListUser.new.call(
                 nickname:
@@ -215,6 +191,7 @@ module TravellingSuggestions
             end
 
             routing.is 'favorites' do
+              response.cache_control public: true, max_age: 30
               nickname = routing.params['nickname']
               result = Service::ListUserFavorites.new.call(
                 nickname:
@@ -227,6 +204,74 @@ module TravellingSuggestions
               http_response = Representer::HTTPResponse.new(result.value!)
               response.status = http_response.http_status_code
               Representer::User.new(result.value!.message).to_json
+            end
+          end
+
+          routing.on 'recommendation' do
+            routing.is 'attraction_set' do
+              routing.get do
+                response.cache_control public: true, max_age: 30
+                set_size = routing.params['set_size']
+                mbti = routing.params['mbti']
+                result = Request::EncodedAttractionSet.new(
+                  k: set_size
+                ).call
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+
+                set_size = set_size.to_i
+                result = Service::ListAttractionSet.new.call(
+                  mbti, set_size
+                )
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+                http_response = Representer::HTTPResponse.new(result.value!)
+                response.status = http_response.http_status_code
+                Representer::AttractionSet.new(result.value!.message).to_json
+              end
+            end
+
+            routing.is 'attraction' do
+              routing.get do
+                response.cache_control public: true, max_age: 30
+                id = routing.params['attraction_id'].to_i
+                result = Service::ListAttraction.new.call(id)
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+                http_response = Representer::HTTPResponse.new(result.value!)
+                response.status = http_response.http_status_code
+                Representer::Attraction.new(result.value!.message).to_json
+              end
+            end
+
+            routing.is 'result' do
+              routing.get do
+                # GET attraction result from user like/dislike
+                params = routing.params
+                result = Request::EncodedAttraction.new(params).call
+                
+                # Check result submit validity
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+
+                result = Service::UpdateUserFavorites.new.call(routing.params)
+
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+                
+                http_response = Representer::HTTPResponse.new(result.value!)
+                response.status = http_response.http_status_code
+              end
             end
           end
         end
