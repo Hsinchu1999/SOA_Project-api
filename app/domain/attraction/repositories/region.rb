@@ -11,10 +11,11 @@ module TravellingSuggestions
       def self.rebuild_entity(db_record)
         return nil unless db_record
 
+        # weather_entity = Repository::Weathers.find_region_id(db_record.id)
         Entity::Region.new(
           country: db_record.country,
           city: db_record.city,
-          weather: Repository::Weathers.find_region_id(db_record.id)
+          weather: nil
         )
       end
 
@@ -27,7 +28,6 @@ module TravellingSuggestions
       def self.db_find_or_create(entity)
         Database::RegionOrm.find_or_create(entity.to_attr_hash)
       end
-      # to be completed
     end
   end
 end
