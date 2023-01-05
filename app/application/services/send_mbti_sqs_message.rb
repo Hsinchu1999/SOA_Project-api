@@ -38,14 +38,9 @@ module TravellingSuggestions
         post_params = input.message[1]
 
         post_params.each do |key, value|
-          message = "{mbti:\"enfj\", attraction_id:1, preference:\"like\"}"
-          puts 'in send_message'
-          puts App.config.TSP_QUEUE_URL
-          puts App.config
+          message = "{mbti:\"#{user.mbti}\", attraction_id:#{key.to_s}, preference:\"#{value}\"}"
           queue = TravellingSuggestions::Messaging::Queue.new(App.config.TSP_QUEUE_URL, App.config)
           res = queue.send(message)
-          puts res
-          puts res.class
         end
 
         Success(
