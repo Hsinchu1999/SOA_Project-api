@@ -12,7 +12,7 @@ module TravellingSuggestions
 
       attribute :country,         Strict::String
       attribute :city,            Strict::String
-      attribute :weather,         Weather
+      attribute :weather,         Weather.optional
 
       def to_attr_hash
         to_hash.except(:weather)
