@@ -241,9 +241,11 @@ module TravellingSuggestions
                 id = routing.params['attraction_id'].to_i
                 result = Service::ListAttraction.new.call(id)
                 if result.failure?
+                  puts 'in failure'
                   failed = Representer::HTTPResponse.new(result.failure)
                   routing.halt failed.http_status_code, failed.to_json
                 end
+                puts "result.value!=#{result.value!}"
                 http_response = Representer::HTTPResponse.new(result.value!)
                 response.status = http_response.http_status_code
                 Representer::Attraction.new(result.value!.message).to_json
@@ -268,9 +270,17 @@ module TravellingSuggestions
                   failed = Representer::HTTPResponse.new(result.failure)
                   routing.halt failed.http_status_code, failed.to_json
                 end
-                
+
+                result = Service::SendMbtiSqsMessage.new.call(routing.params)
+
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+
                 http_response = Representer::HTTPResponse.new(result.value!)
                 response.status = http_response.http_status_code
+                result.value!.message.to_json
               end
             end
           end
