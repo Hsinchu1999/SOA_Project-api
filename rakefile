@@ -25,6 +25,22 @@ task :setup_mbti do
   sh 'ruby setup_mbti.rb'
 end
 
+desc 'setup attractions'
+task :setup_attraction do
+  require_relative 'config/environment'
+  require_app
+  CONFIG = YAML.safe_load(File.read('config/secrets.yml'))
+  CWB_TOKEN = CONFIG['test']['CWB_TOKEN']
+  CITY = '新北市'
+  NTPCAPI = TravellingSuggestions::NewTaiPeiCityGovernment::NTPCApi
+  region = TravellingSuggestions::Mapper::RegionMapper.new('Taiwan', CITY).find_weather(CWB_TOKEN)
+  rebuilt_region = TravellingSuggestions::Repository::Regions.db_find_or_create(region)
+  attractions = TravellingSuggestions::Mapper::AttractionNTPCMapper.new(NTPCAPI, region).find(0, 100)
+  attractions.each do |attraction|
+    TravellingSuggestions::Repository::Attractions.db_find_or_create(attraction)
+  end
+end
+
 desc 'run tests'
 task :db_spec do
   require_relative 'config/environment'
