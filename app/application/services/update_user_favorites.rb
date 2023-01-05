@@ -14,11 +14,14 @@ module TravellingSuggestions
       private
 
       def create_user_entity(post_params)
+        puts 'in create_user_entity'
+        puts "post_params=#{post_params}"
         if (user = Repository::ForUser.klass(Entity::User).find_name(post_params['nickname']))
+          post_params.delete('nickname')
           Success(
               Response::ApiResult.new(
                 status: :ok,
-                message: [user, post_params.delete('nickname')]
+                message: [user, post_params]
               )
             )
         else
@@ -32,13 +35,26 @@ module TravellingSuggestions
       end
 
       def update_user_favorites(input)
+        puts 'in update_user_favorites'
+        puts "input=#{input}"
         user = input.message[0]
+        puts "user=#{user}"
         post_params = input.message[1]
+        puts "post_params=#{post_params}"
 
         post_params.each do |key, value|
           next unless value == 'like'
-          attraction = Repository::ForAttraction.klass(Entity::Attraction).find_id(key)
+          puts key
+          puts key.class
+          attraction = Repository::ForAttraction.klass(Entity::Attraction).find_id(key.to_i)
+          puts "attraction=#{attraction}"
+          puts 'BEFORE ADDING'
+          puts "user.favorite_attractions.favorites_list=#{user.favorite_attractions.favorites_list}"
           user.favorite_attractions.add_new(attraction)
+          puts 'AFTER ADDING'
+          puts "user.favorite_attractions.favorites_list=#{user.favorite_attractions.favorites_list}"
+          fav_attraction_orms = Repository::UsersFavorites.db_find_or_create(user.favorite_attractions)
+          # actually creates
         end
 
         Success(

@@ -15,6 +15,10 @@ module TravellingSuggestions
       def self.rebuild_entity(db_record)
         return nil unless db_record
 
+        puts "in Repository::UsersFavorites.rebuild_entity"
+        puts "db_record=#{db_record}"
+        puts "db_record.favorite_attractions=#{db_record.favorite_attractions}"
+
         user_favorite_attractions = Repository::Attractions.rebuild_many_entities(db_record.favorite_attractions)
 
         Entity::UserFavorite.new(
@@ -28,10 +32,11 @@ module TravellingSuggestions
         end
       end
 
-      def self.db_find_or_create(_entity)
-        nil
+      def self.db_find_or_create(entity)
+        entity.favorites_list.map do |attraction|
+          Database::AttractionOrm.find_or_create(attraction.to_attr_hash)
+        end
       end
-      # to be completed
     end
   end
 end
