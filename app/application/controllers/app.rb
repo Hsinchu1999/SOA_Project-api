@@ -71,10 +71,8 @@ module TravellingSuggestions
             routing.is 'question_set' do
               # GET a set (array) of mbti question id for a complete mbti test
               routing.get do
-                puts 'in question_set'
                 response.cache_control public: true, max_age: 30
                 set_size = routing.params['set_size']
-                puts "set_size=#{set_size}"
 
                 result = Request::EncodedMBTIQuestionSet.new(
                   set_size:

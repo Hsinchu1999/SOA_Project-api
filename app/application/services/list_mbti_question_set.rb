@@ -14,7 +14,6 @@ module TravellingSuggestions
       private
 
       def setup_sets(input)
-        puts 'in Service::ListMbtiQuestionSet'
         set_size = input[:set_size]
         min_id = TravellingSuggestions::App.config.MBTI_QUESTION_MIN_ID.to_i
         max_id = TravellingSuggestions::App.config.MBTI_QUESTION_MAX_ID.to_i
@@ -26,11 +25,7 @@ module TravellingSuggestions
         tf_section = []
 
         question_ids.each do |question_id|
-          puts 'in question_ids.each'
-          puts "question_id=#{question_id}"
           mbti_question = Repository::ForMBTI.klass(Entity::MBTIQuestion).find_id(question_id)
-          puts "mbti_question=#{mbti_question}"
-          puts "mbti_question.class=#{mbti_question.class}"
           case mbti_question.section
           when 'JP'
             jp_section.append(mbti_question)
