@@ -38,7 +38,7 @@ module TravellingSuggestions
         post_params = input.message[1]
 
         post_params.each do |key, value|
-          message = "{mbti:\"#{user.mbti}\", attraction_id:#{key.to_s}, preference:\"#{value}\"}"
+          message = "{\"mbti\":\"#{user.mbti}\", \"attraction_id\":#{key.to_s}, \"preference\":\"#{value}\"}"
           queue = TravellingSuggestions::Messaging::Queue.new(App.config.TSP_QUEUE_URL, App.config)
           res = queue.send(message)
         end
