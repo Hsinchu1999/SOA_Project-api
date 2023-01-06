@@ -32,7 +32,7 @@ module TravellingSuggestions
         raise StandardError unless k.to_i <= 50
         raise StandardError unless k.to_i.positive?
 
-        set_size
+        k
       end
     end
   end

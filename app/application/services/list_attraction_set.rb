@@ -13,8 +13,14 @@ module TravellingSuggestions
 
       private
 
-      def setup_recommender(mbti, k)
-        recommender = TravellingSuggestions::Entity::Recommender.new(mbti)
+      def setup_recommender(input)
+        puts 'In Service::ListAttractionSet.setup_recommender'
+        mbti = input[:mbti]
+        k = input[:k]
+        attraction_mbti_ratings_list = TravellingSuggestions::Repository::AttractionMbtiRatings.find_all
+        puts "attraction_mbti_ratings_list=#{attraction_mbti_ratings_list}"
+        puts "attraction_mbti_ratings_list.class=#{attraction_mbti_ratings_list.class}"
+        recommender = TravellingSuggestions::Entity::Recommender.new(mbti, attraction_mbti_ratings_list)
         Success([recommender, k])
       rescue StandardError
         Failure(

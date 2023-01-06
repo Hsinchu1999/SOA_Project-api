@@ -223,7 +223,7 @@ module TravellingSuggestions
 
                 set_size = set_size.to_i
                 result = Service::ListAttractionSet.new.call(
-                  mbti, set_size
+                  mbti:, set_size:
                 )
                 if result.failure?
                   failed = Representer::HTTPResponse.new(result.failure)

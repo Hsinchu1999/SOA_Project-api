@@ -5,7 +5,16 @@ module TravellingSuggestions
     # An Repository object for Entity::Attraction
     class AttractionMbtiRatings
       def self.find_id(id)
+        puts 'In Repository::AttractionMbtiRatings.find_id'
+        puts "id=#{id}"
         rebuild_entity Database::AttractionMbtiRatingOrm.first(id:)
+      end
+
+      def self.find_all()
+        puts 'In Repository::AttractionMbtiRatings.find_all'
+        ratings = Database::AttractionMbtiRatingOrm.all
+        puts "ratings=#{ratings}"
+        rebuild_many_entities(ratings)
       end
 
       def self.rebuild_entity(db_record)
