@@ -5,7 +5,7 @@ require 'sequel'
 module TravellingSuggestions
   module Database
     class AttractionMbtiRatingOrm < Sequel::Model(:attraction_mbti_ratings)
-      many_to_one :attracion,
+      many_to_one :attraction,
                 class: :'TravellingSuggestions::Database::AttractionOrm'
       plugin :timestamps, update_on_create: true
 
