@@ -45,7 +45,7 @@ desc 'setup attraction mbti ratings'
 task :setup_attr_ratings do
   require_relative 'config/environment'
   require_app
-  attraction_ids = Array(0..100)
+  attraction_ids = Array(1..100)
   attraction_ids.each do |attraction_id|
     rating_entity = TravellingSuggestions::Entity::AttractionMbtiRating.new(
       id: nil,
