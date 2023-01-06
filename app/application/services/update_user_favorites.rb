@@ -53,7 +53,9 @@ module TravellingSuggestions
           user.favorite_attractions.add_new(attraction)
           puts 'AFTER ADDING'
           puts "user.favorite_attractions.favorites_list=#{user.favorite_attractions.favorites_list}"
-          fav_attraction_orms = Repository::UsersFavorites.db_find_or_create(user.favorite_attractions)
+          user_db = Repository::Users.db_find(user.nickname)
+          user_db.add_favorite_attraction(Repository::Attractions.db_find_or_create(attraction))
+          #fav_attraction_orms = Repository::UsersFavorites.db_find_or_create(user.favorite_attractions)
           # actually creates
         end
 

@@ -31,8 +31,8 @@ module TravellingSuggestions
         end
       end
 
-      def self.db_find_or_create(_entity)
-        nil
+      def self.db_find(nickname)
+        Database::UserOrm.find(nickname:)
       end
 
       def self.db_create(nickname, mbti)
