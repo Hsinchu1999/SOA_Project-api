@@ -13,13 +13,15 @@ module TravellingSuggestions
 
       private
 
-      def create_user_entity(post_params)
+      def create_user_entity(input)
+        post_params = input['post_params']
+        keep_ids = input['keep_ids']
         if (user = Repository::ForUser.klass(Entity::User).find_name(post_params['nickname']))
           post_params.delete('nickname')
           Success(
               Response::ApiResult.new(
                 status: :ok,
-                message: [user, post_params]
+                message: [user, post_params, keep_ids]
               )
             )
         else
@@ -33,11 +35,13 @@ module TravellingSuggestions
       end
 
       def send_message(input)
-        puts 'in send_message'
+        # puts 'in send_message'
         user = input.message[0]
         post_params = input.message[1]
+        keep_ids = input.message[2]
 
         post_params.each do |key, value|
+          next unless keep_ids.include? key.to_i
           message = "{\"mbti\":\"#{user.mbti}\", \"attraction_id\":#{key.to_s}, \"preference\":\"#{value}\"}"
           queue = TravellingSuggestions::Messaging::Queue.new(App.config.TSP_QUEUE_URL, App.config)
           res = queue.send(message)
