@@ -270,7 +270,7 @@ module TravellingSuggestions
                   failed = Representer::HTTPResponse.new(result.failure)
                   routing.halt failed.http_status_code, failed.to_json
                 end
-
+                puts result.value!.message
                 result = Service::SendMbtiSqsMessage.new.call(routing.params)
 
                 if result.failure?
