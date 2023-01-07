@@ -203,7 +203,7 @@ module TravellingSuggestions
 
               http_response = Representer::HTTPResponse.new(result.value!)
               response.status = http_response.http_status_code
-              Representer::User.new(result.value!.message).to_json
+              Representer::UserFavorite.new(result.value!.message).to_json
             end
           end
 

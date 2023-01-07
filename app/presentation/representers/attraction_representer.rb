@@ -26,10 +26,14 @@ module TravellingSuggestions
       # property :best_time_to_visit
 
       link :self do
-        "#{App.config.API_HOST}/attractions/#{attraction_name}/#{city_name}"
+       "#{App.config.API_HOST}/recommendation/attraction&attraction_id=#{id}"
       end
 
       private
+
+      def id
+        represented.id
+      end
 
       def city_name
         represented.in_region.city
