@@ -25,6 +25,69 @@ task :setup_mbti do
   sh 'ruby setup_mbti.rb'
 end
 
+desc 'setup attractions'
+task :setup_attraction do
+  require_relative 'config/environment'
+  require_app
+  CONFIG = YAML.safe_load(File.read('config/secrets.yml'))
+  CWB_TOKEN = CONFIG['test']['CWB_TOKEN']
+  CITY = '新北市'
+  NTPCAPI = TravellingSuggestions::NewTaiPeiCityGovernment::NTPCApi
+  region = TravellingSuggestions::Mapper::RegionMapper.new('Taiwan', CITY).find_weather(CWB_TOKEN)
+  rebuilt_region = TravellingSuggestions::Repository::Regions.db_find_or_create(region)
+  attractions = TravellingSuggestions::Mapper::AttractionNTPCMapper.new(NTPCAPI, region).find(0, 100)
+  attractions.each do |attraction|
+    TravellingSuggestions::Repository::Attractions.db_find_or_create(attraction)
+  end
+end
+
+desc 'setup attraction mbti ratings'
+task :setup_attr_ratings do
+  require_relative 'config/environment'
+  require_app
+  attraction_ids = Array(1..100)
+  attraction_ids.each do |attraction_id|
+    rating_entity = TravellingSuggestions::Entity::AttractionMbtiRating.new(
+      id: nil,
+      attraction_id: attraction_id,
+      ESTJ_like: 1,
+      ESTJ_seen: 1,
+      ENTJ_like: 1,
+      ENTJ_seen: 1,
+      ESFJ_like: 1,
+      ESFJ_seen: 1,
+      ENFJ_like: 1,
+      ENFJ_seen: 1,
+      ISTJ_like: 1,
+      ISTJ_seen: 1,
+      ISFJ_like: 1,
+      ISFJ_seen: 1,
+      INTJ_like: 1,
+      INTJ_seen: 1,
+      INFJ_like: 1,
+      INFJ_seen: 1,
+      ESTP_like: 1,
+      ESTP_seen: 1,
+      ESFP_like: 1,
+      ESFP_seen: 1,
+      ENTP_like: 1,
+      ENTP_seen: 1,
+      ENFP_like: 1,
+      ENFP_seen: 1,
+      ISTP_like: 1,
+      ISTP_seen: 1,
+      ISFP_like: 1,
+      ISFP_seen: 1,
+      INTP_like: 1,
+      INTP_seen: 1,
+      INFP_like: 1,
+      INFP_seen: 1
+    )
+    puts rating_entity
+    TravellingSuggestions::Repository::AttractionMbtiRatings.db_find_or_create(rating_entity)
+  end
+end
+
 desc 'run tests'
 task :db_spec do
   require_relative 'config/environment'

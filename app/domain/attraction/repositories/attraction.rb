@@ -11,20 +11,21 @@ module TravellingSuggestions
       def self.rebuild_entity(db_record)
         return nil unless db_record
 
-        region_entity = Repository::Region.find_id(db_record.in_region_id)
+        region_entity = Repository::Regions.find_id(db_record.in_region_id)
 
         Entity::Attraction.new(
+          name: db_record.name,
           id: db_record.id,
           added_time: db_record.created_at.to_s,
           in_region: region_entity,
-          indoor_or_outdoor: db_record.indoor_or_outdoor.to_sym,
-          main_activity: db_record.main_activity,
-          staying_time: db_record.staying_time,
+          indoor_or_outdoor: nil,
+          main_activity: nil,
+          staying_time: nil,
           type: db_record.type,
-          attendants: db_record.attendants,
+          attendants: nil,
           notes: db_record.notes,
           contact: db_record.contact,
-          best_time_to_visit: db_record.best_time_to_visit
+          best_time_to_visit: nil
         )
       end
 
@@ -39,7 +40,6 @@ module TravellingSuggestions
         db_region = Database::RegionOrm.find_or_create(entity.in_region.to_attr_hash)
         db_attraction.update(in_region_id: db_region.id)
       end
-      # to be completed
     end
   end
 end

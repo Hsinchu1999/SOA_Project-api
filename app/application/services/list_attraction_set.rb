@@ -13,8 +13,12 @@ module TravellingSuggestions
 
       private
 
-      def setup_recommender(mbti, k)
-        recommender = TravellingSuggestions::Entity::Recommender.new(mbti)
+      def setup_recommender(input)
+        mbti = input[:mbti]
+        k = input[:set_size]
+
+        attraction_mbti_ratings_list = TravellingSuggestions::Repository::AttractionMbtiRatings.find_all
+        recommender = TravellingSuggestions::Entity::Recommender.new(mbti, attraction_mbti_ratings_list)
         Success([recommender, k])
       rescue StandardError
         Failure(
@@ -28,11 +32,13 @@ module TravellingSuggestions
       def pick_set(input)
         recommender = input[0]
         k = input[1]
+        puts "In pick_set"
+        puts "k=#{k}"
         attractions = recommender.mbti_top_k(k)
         Success(
           Response::ApiResult.new(
             status: :ok,
-            message: attractions
+            message: attractions.map { |attraction| attraction.attraction_id }
           )
         )
       rescue StandardError

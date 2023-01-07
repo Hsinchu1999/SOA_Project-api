@@ -14,25 +14,25 @@ module TravellingSuggestions
 
       property :name
       property :id
-      property :added_time
-      property :region, extend: Representer::Region, class: OpenStruct
-      property :indoor_or_outdoor
-      property :main_activity
-      property :staying_time
+      # property :added_time
+      property :in_region, extend: Representer::Region, class: OpenStruct
+      # property :indoor_or_outdoor
+      # property :main_activity
+      # property :staying_time
       property :type
-      property :attendants
+      # property :attendants
       property :notes
       property :contact
-      property :best_time_to_visit
+      # property :best_time_to_visit
 
       link :self do
-        "#{Api.config.API_HOST}/attractions/#{attraction_name}/#{city_name}"
+        "#{App.config.API_HOST}/attractions/#{attraction_name}/#{city_name}"
       end
 
       private
 
       def city_name
-        represented.region.city
+        represented.in_region.city
       end
 
       def attraction_name

@@ -8,6 +8,11 @@ module TravellingSuggestions
         rebuild_entity Database::AttractionMbtiRatingOrm.first(id:)
       end
 
+      def self.find_all()
+        ratings = Database::AttractionMbtiRatingOrm.all
+        rebuild_many_entities(ratings)
+      end
+
       def self.rebuild_entity(db_record)
         return nil unless db_record
 
