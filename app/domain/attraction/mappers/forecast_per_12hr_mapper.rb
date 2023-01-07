@@ -17,8 +17,8 @@ module TravellingSuggestions
       def build_entity
         Entity::ForecastPer12Hr.new(
           pop: @pop,
-          min_temp: @min_temp,
-          max_temp: @max_temp
+          minT: @min_temp,
+          maxT: @max_temp
         )
       end
     end
