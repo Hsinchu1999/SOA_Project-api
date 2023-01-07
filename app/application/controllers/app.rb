@@ -284,6 +284,43 @@ module TravellingSuggestions
               end
             end
           end
+
+          routing.on 'model' do
+            routing.is 'update' do
+              routing.get do
+                routing_params = routing.params
+                # puts "routing_params=#{routing_params}"
+                result = Service::UpdateModel.new.call(routing_params)
+                
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+
+                http_response = Representer::HTTPResponse.new(result.value!)
+                response.status = http_response.http_status_code
+                "{\"Success\":\"Success\"}"
+              end
+            end
+            routing.is 'attraction' do
+              routing.get do
+                attraction_id = routing.params['attraction_id']
+                result = Service::ListAttractionMbtiRating.new.call(
+                  attraction_id:
+                )
+
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+
+                http_response = Representer::HTTPResponse.new(result.value!)
+                response.status = http_response.http_status_code
+                Representer::AttractionMbtiRating.new(result.value!.message).to_json
+
+              end
+            end
+          end
         end
       end
     end
