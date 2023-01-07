@@ -41,7 +41,7 @@ module TravellingSuggestions
         puts "user=#{user}"
         post_params = input.message[1]
         puts "post_params=#{post_params}"
-
+        attractions_new_like_ids = []
         post_params.each do |key, value|
           next unless value == 'like'
           puts key
@@ -54,7 +54,13 @@ module TravellingSuggestions
           puts 'AFTER ADDING'
           puts "user.favorite_attractions.favorites_list=#{user.favorite_attractions.favorites_list}"
           user_db = Repository::Users.db_find(user.nickname)
-          user_db.add_favorite_attraction(Repository::Attractions.db_find_or_create(attraction))
+          if user_db.favorite_attractions.find { |attraction| attraction.id == key.to_i }
+            puts "existed:#{key.to_i}"
+          else
+            puts "new:#{key.to_i}"
+            attractions_new_like_ids.append(key.to_i)
+            user_db.add_favorite_attraction(Repository::Attractions.db_find(attraction))
+          end
           #fav_attraction_orms = Repository::UsersFavorites.db_find_or_create(user.favorite_attractions)
           # actually creates
         end
@@ -62,7 +68,7 @@ module TravellingSuggestions
         Success(
           Response::ApiResult.new(
             status: :ok,
-            message: 'Success'
+            message: attractions_new_like_ids
           )
         )
       rescue StandardError
