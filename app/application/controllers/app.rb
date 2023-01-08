@@ -238,8 +238,16 @@ module TravellingSuggestions
             routing.is 'attraction' do
               routing.get do
                 response.cache_control public: true, max_age: 30
-                id = routing.params['attraction_id'].to_i
-                result = Service::ListAttraction.new.call(id)
+                attraction_id = routing.params['attraction_id']
+                result = Request::EncodedAttraction.new(
+                  attraction_id:
+                ).call
+                if result.failure?
+                  failed = Representer::HTTPResponse.new(result.failure)
+                  routing.halt failed.http_status_code, failed.to_json
+                end
+
+                result = Service::ListAttraction.new.call(attraction_id.to_i)
                 if result.failure?
                   puts 'in failure'
                   failed = Representer::HTTPResponse.new(result.failure)
@@ -256,7 +264,7 @@ module TravellingSuggestions
               routing.get do
                 # GET attraction result from user like/dislike
                 params = routing.params
-                result = Request::EncodedAttraction.new(params).call
+                result = Request::EncodedCalculateAttraction.new(params).call
                 
                 # Check result submit validity
                 if result.failure?

@@ -34,7 +34,7 @@ describe 'Test API routes' do
     end
   end
 
-  describe 'mbti tests' do
+  describe 'mbti_test/question' do
     it 'HAPPY: should give correct question' do
       MBTI_QUESTION_ID.each do |id|
         correct_answer = TravellingSuggestions::Representer::MBTIQuestion.new(
@@ -58,7 +58,26 @@ describe 'Test API routes' do
     end
   end
 
-  describe 'calculate mbti result' do
+  describe 'mbti_test/question_set' do
+    it 'HAPPY: should give a set of mbti question ids' do
+      VALID_MBTI_QUESTION_SET_SIZE.each do |set_size|
+        get "/api/v1/mbti_test/question_set?set_size=#{set_size}"
+
+        _(last_response.status).must_equal 200
+      end
+    end
+
+    it 'SAD: should block invalid mbti question set size' do
+      INVALID_MBTI_QUESTION_SET_SIZE.each do |set_size|
+        get "/api/v1/mbti_test/question_set?set_size=#{set_size}"
+
+        _(last_response.status).must_equal 400
+      end
+    end
+  end
+
+
+  describe 'mbti_test/result' do
     it 'HAPPY: should calculate correct result' do
       VALID_MBTI_QUESTION_PAIR.each_with_index do |question_pair, index|
         get "/api/v1/mbti_test/result?#{question_pair}"
@@ -73,24 +92,6 @@ describe 'Test API routes' do
     it 'SAD: should block invalid mbti id' do
       INVALID_MBTI_QUESTION_PAIR.each do |question_pair|
         get "/api/v1/mbti_test/result?#{question_pair}"
-
-        _(last_response.status).must_equal 400
-      end
-    end
-  end
-
-  describe 'generate mbti question set' do
-    it 'HAPPY: should give a set of mbti question ids' do
-      VALID_MBTI_QUESTION_SET_SIZE.each do |set_size|
-        get "/api/v1/mbti_test/question_set?set_size=#{set_size}"
-
-        _(last_response.status).must_equal 200
-      end
-    end
-
-    it 'SAD: should block invalid mbti question set size' do
-      INVALID_MBTI_QUESTION_SET_SIZE.each do |set_size|
-        get "/api/v1/mbti_test/question_set?set_size=#{set_size}"
 
         _(last_response.status).must_equal 400
       end
@@ -130,7 +131,7 @@ describe 'Test API routes' do
       end
     end
 
-    it 'SAD: should allow correct user login' do
+    it 'HAPPY: should allow correct user login' do
       VALID_NICKNAMES.each do |nickname|
         post "/api/v1/user/submit_login?nickname=#{nickname}"
 
@@ -145,5 +146,126 @@ describe 'Test API routes' do
         _(last_response.status).must_equal 404
       end
     end
+    it 'HAPPY: should fetch valid user favorites' do
+      VALID_NICKNAMES.each do |nickname|
+        get "/api/v1/user/favorites?nickname=#{nickname}"
+
+        _(last_response.status).must_equal 200
+      end
+    end
+
+    it 'SAD: should fail fetching invalid user favorites' do
+      INVALID_NICKNAMES.each do |nickname|
+        get "/api/v1/user/favorites?nickname=#{nickname}"
+
+        _(last_response.status).must_equal 404
+      end
+    end
   end
+
+  describe 'recommendation/attraction_set' do
+    it 'HAPPY: should give attraction set' do
+      VALID_MBTI_TYPES_CAP.each do |mbti|
+        VALID_ATTRACTION_SET_SIZE.each do |set_size|
+          get "/api/v1/recommendation/attraction_set?set_size=#{set_size.to_s}&mbti=#{mbti.to_s}"
+          _(last_response.status).must_equal 200
+
+          attraction_set = JSON.parse(last_response.body)
+          # puts "attraction_set=#{attraction_set}"
+
+          _(attraction_set['attraction_set'].length).must_equal set_size
+        end
+      end
+    end
+
+    it 'SAD: should reject incorrect attraction set size' do
+      VALID_MBTI_TYPES_CAP.each do |mbti|
+        INVALID_ATTRACTION_SET_SIZE_POS.each do |set_size|
+          get "/api/v1/recommendation/attraction_set?set_size=#{set_size.to_s}&mbti=#{mbti.to_s}"
+
+          _(last_response.status).must_equal 400
+        end
+      end
+
+      VALID_MBTI_TYPES_CAP.each do |mbti|
+        INVALID_ATTRACTION_SET_SIZE_NEG.each do |set_size|
+          get "/api/v1/recommendation/attraction_set?set_size=#{set_size.to_s}&mbti=#{mbti.to_s}"
+
+          _(last_response.status).must_equal 400
+        end
+      end
+    end
+
+    it 'SAD: should reject incorrect mbti' do
+      INVALID_MBTI_TYPES_CAP.each do |mbti|
+        VALID_ATTRACTION_SET_SIZE.each do |set_size|
+          get "/api/v1/recommendation/attraction_set?set_size=#{set_size.to_s}&mbti=#{mbti.to_s}"
+
+          _(last_response.status).must_equal 500
+        end
+      end
+    end
+  end
+
+  describe 'recommendation/attraction' do
+    it 'HAPPY: should able to return attraction' do
+      VALID_ATTRACTION_ID.each do |attraction_id|
+        get "/api/v1/recommendation/attraction?attraction_id=#{attraction_id.to_s}"
+        _(last_response.status).must_equal 200
+      end
+    end
+
+    it 'SAD: should able to reject invalid attraction id' do
+      INVALID_MBTI_QUESTION_PAIR.each do |attraction_id|
+        get "/api/v1/recommendation/attraction?attraction_id=#{attraction_id.to_s}"
+        _(last_response.status).must_equal 400
+      end
+    end
+  end
+
+  describe 'recommendation/result' do
+    before do
+      # Constructs a valid user profile
+      VALID_NICKNAMES.each do |nickname|
+        post "/api/v1/user/construct_profile?nickname=#{nickname}&mbti=ENFJ"
+      end
+    end
+
+    it 'HAPPY: should successfully update' do
+      VALID_ATTRACTION_SET.each do |attraction_set|
+        VALID_NICKNAMES.each do |nickname|
+          get "/api/v1/recommendation/result?nickname=peter_chen&#{attraction_set[0]}=like&#{attraction_set[1]}=dislike&#{attraction_set[2]}=like"
+        end
+      end
+    end
+
+    it 'SAD: should reject incorrect nickname' do
+      VALID_ATTRACTION_SET.each do |attraction_set|
+        INVALID_NICKNAMES.each do |nickname|
+          get "/api/v1/recommendation/result?nickname=#{nickname}&#{attraction_set[0]}=like&#{attraction_set[1]}=dislike&#{attraction_set[2]}=like"
+          _(last_response.status).must_equal 404
+        end
+      end
+    end
+
+  end
+
+  describe 'model/update' do
+    it 'HAPPY: should calculate correct result' do
+      VALID_MBTI_QUESTION_PAIR.each_with_index do |question_pair, index|
+        get "/api/v1/model/update?attraction_id=1&estj_like=1&estj_dislike=1&entj_like=2&entj_dislike=2&esfj_like=3&esfj_dislike=3&enfj_like=4&enfj_dislike=4&istj_like=5&istj_dislike=5&isfj_like=6&isfj_dislike=6&intj_like=7&intj_dislike=7&infj_like=8&infj_dislike=8&estp_like=9&estp_dislike=9&esfp_like=1&esfp_dislike=1&entp_like=2&entp_dislike=2&enfp_like=3&enfp_dislike=3&istp_like=4&istp_dislike=4&isfp_like=5&isfp_dislike=5&intp_like=6&intp_dislike=6&infp_like=7&infp_dislike=7"
+        _(last_response.status).must_equal 200
+      end
+    end
+  end
+
+  describe 'model/attraction' do
+    it 'HAPPY: should give correct result' do
+      VALID_ATTRACTION_ID.each do |attraction_id|
+        get "/api/v1/model/attraction?attraction_id=#{attraction_id}"
+        _(last_response.status).must_equal 200
+      end
+    end
+  end
+
 end
