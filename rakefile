@@ -14,6 +14,14 @@ Rake::TestTask.new(:spec) do |t|
   t.warning = false
 end
 
+desc 'reboot db'
+task :reboot_db do
+  Rake::Task["setup_mbti"].execute
+  Rake::Task["setup_attraction"].execute
+  Rake::Task["setup_attraction"].execute
+  Rake::Task["setup_attr_ratings"].execute
+end
+
 desc 'update weather'
 task :update_weather do
   sh 'ruby weather.rb'
