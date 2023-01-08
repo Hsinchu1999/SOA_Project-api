@@ -6,7 +6,7 @@ require 'json'
 module TravellingSuggestions
   module Request
     # A Request object for validating updates for user favorites
-    class EncodedAttraction
+    class EncodedCalculateAttraction
       include Dry::Monads::Result::Mixin
 
       def initialize(params)
