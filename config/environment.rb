@@ -23,6 +23,8 @@ module TravellingSuggestions
 
       configure :development, :test do
         ENV['DATABASE_URL'] = "sqlite://#{config.DB_FILENAME}"
+        ENV['MBTI_QUESTION_MIN_ID'] = config.MBTI_QUESTION_MIN_ID
+        ENV['MBTI_QUESTION_MAX_ID'] = config.MBTI_QUESTION_MAX_ID
       end
 
       configure :development, :test do
