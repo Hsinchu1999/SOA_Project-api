@@ -15,8 +15,8 @@ module TravellingSuggestions
 
       def setup_sets(input)
         set_size = input[:set_size]
-        min_id = TravellingSuggestions::App.config.MBTI_QUESTION_MIN_ID.to_i
-        max_id = TravellingSuggestions::App.config.MBTI_QUESTION_MAX_ID.to_i
+        min_id = ENV['MBTI_QUESTION_MIN_ID'].to_i
+        max_id = ENV['MBTI_QUESTION_MAX_ID'].to_i
         question_ids = (min_id..max_id).to_a
 
         ei_section = []
