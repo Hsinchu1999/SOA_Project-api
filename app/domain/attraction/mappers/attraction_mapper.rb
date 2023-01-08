@@ -41,8 +41,8 @@ module TravellingSuggestions
 
       def classes_type(class1, class2, class3)
         type_str = class_name(class1) unless class1.nil?
-        type_str = type_str + ', ' + class_name(class2) unless class2.nil?
-        type_str = type_str + ', ' + class_name(class3) unless class3.nil?
+        # type_str = type_str + ', ' + class_name(class2) unless class2.nil?
+        # type_str = type_str + ', ' + class_name(class3) unless class3.nil?
       end
 
       def class_name(class_id)
