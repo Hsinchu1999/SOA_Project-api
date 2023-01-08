@@ -5,8 +5,8 @@ require 'json'
 
 module TravellingSuggestions
   module Request
-    # A Request object for validating updates for user favorites
-    class EncodedCalculateAttraction
+    # A Request object for calculating mbti score
+    class EncodedAttraction
       include Dry::Monads::Result::Mixin
 
       def initialize(params)
@@ -21,19 +21,17 @@ module TravellingSuggestions
         Failure(
           Response::ApiResult.new(
             status: :bad_request,
-            message: 'Incorrect attraction update request url'
+            message: 'Incorrect attraction id'
           )
         )
       end
 
       def rule
-        @params.each do |key, value|
-          next if key == 'nickname'
-          raise StandardError unless key !~ /\D/
-          raise StandardError unless ['like', 'dislike'].include? value
-        end
+        attraction_id = @params[:attraction_id]
+        raise StandardError unless attraction_id !~ /\D/
+        raise StandardError unless attraction_id.to_i.positive?
 
-        @params
+        attraction_id
       end
     end
   end
