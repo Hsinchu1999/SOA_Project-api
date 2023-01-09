@@ -24,10 +24,16 @@ jobs:
         with:
           bundler-cache: true
       
-      - name: Setup standard test database
+      - name: Migrate standard test database
         env:
           DB_FILENAME: ${{ secrets.DB_FILENAME }}
         run: RACK_ENV=test bundle exec rake db:migrate
+      
+      - name: Setup standard test database
+        env:
+          DB_FILENAME: ${{ secrets.DB_FILENAME }}
+          CWB_TOKEN: ${{ secrets.CWB_TOKEN }}
+        run: RACK_ENV=test bundle exec rake reboot_db
       
       - name: Setup mbti test database
         env:
