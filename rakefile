@@ -14,6 +14,13 @@ Rake::TestTask.new(:spec) do |t|
   t.warning = false
 end
 
+desc 'Run env test'
+task :env_test do
+  require_relative 'config/environment'
+  puts ENV['DATABASE_URL']
+  puts "ENV['CWB_TOKEN']=#{ENV['CWB_TOKEN']}"
+end
+
 desc 'reboot db'
 task :reboot_db do
   Rake::Task["setup_mbti"].execute
@@ -38,9 +45,11 @@ task :setup_attraction do
   require_app
   # CONFIG = YAML.safe_load(File.read('config/secrets.yml'))
   # CWB_TOKEN = CONFIG['test']['CWB_TOKEN']
+  # puts 'In setup_attraction'
+  # puts "ENV=#{ENV}"
   CITY = '新北市'
   NTPCAPI = TravellingSuggestions::NewTaiPeiCityGovernment::NTPCApi
-  region = TravellingSuggestions::Mapper::RegionMapper.new('Taiwan', CITY).find_weather(CWB_TOKEN)
+  region = TravellingSuggestions::Mapper::RegionMapper.new('Taiwan', CITY).find_weather(ENV['CWB_TOKEN'])
   rebuilt_region = TravellingSuggestions::Repository::Regions.db_find_or_create(region)
   attractions = TravellingSuggestions::Mapper::AttractionNTPCMapper.new(NTPCAPI, region).find(0, 100)
   attractions.each do |attraction|
