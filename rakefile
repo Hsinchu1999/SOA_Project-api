@@ -18,7 +18,6 @@ desc 'reboot db'
 task :reboot_db do
   Rake::Task["setup_mbti"].execute
   Rake::Task["setup_attraction"].execute
-  Rake::Task["setup_attraction"].execute
   Rake::Task["setup_attr_ratings"].execute
 end
 
