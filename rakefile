@@ -36,8 +36,8 @@ desc 'setup attractions'
 task :setup_attraction do
   require_relative 'config/environment'
   require_app
-  CONFIG = YAML.safe_load(File.read('config/secrets.yml'))
-  CWB_TOKEN = CONFIG['test']['CWB_TOKEN']
+  # CONFIG = YAML.safe_load(File.read('config/secrets.yml'))
+  # CWB_TOKEN = CONFIG['test']['CWB_TOKEN']
   CITY = '新北市'
   NTPCAPI = TravellingSuggestions::NewTaiPeiCityGovernment::NTPCApi
   region = TravellingSuggestions::Mapper::RegionMapper.new('Taiwan', CITY).find_weather(CWB_TOKEN)
