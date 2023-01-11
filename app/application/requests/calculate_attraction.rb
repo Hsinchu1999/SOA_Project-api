@@ -30,7 +30,7 @@ module TravellingSuggestions
         @params.each do |key, value|
           next if key == 'nickname'
           raise StandardError unless key !~ /\D/
-          raise StandardError unless ['like', 'dislike'].include? value
+          raise StandardError unless %w[like dislike].include? value
         end
 
         @params
