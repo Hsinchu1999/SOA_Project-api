@@ -37,8 +37,8 @@ module TravellingSuggestions
       configure :production do
         use Rack::Cache,
             verbose: true,
-            metastore: config.REDISCLOUD_URL + '/0/metastore',
-            entitystore: config.REDISCLOUD_URL + '/0/entitystore'
+            metastore: "#{config.REDISCLOUD_URL}/0/metastore",
+            entitystore: "#{config.REDISCLOUD_URL}/0/entitystore"
       end
 
       use Rack::Session::Cookie, secret: config.SESSION_SECRET
