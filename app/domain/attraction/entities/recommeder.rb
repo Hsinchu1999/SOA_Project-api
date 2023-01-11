@@ -7,8 +7,7 @@ module TravellingSuggestions
   module Entity
     # An Entity object to calculate MBTI score
     class Recommender
-      attr_accessor :mbti_type
-      attr_accessor :attraction_mbti_ratings_list
+      attr_accessor :mbti_type, :attraction_mbti_ratings_list
 
       def initialize(mbti_type, attraction_mbti_ratings_list)
         @mbti_type = mbti_type

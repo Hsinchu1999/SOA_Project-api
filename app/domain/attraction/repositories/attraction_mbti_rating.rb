@@ -12,7 +12,7 @@ module TravellingSuggestions
         rebuild_entity Database::AttractionMbtiRatingOrm.first(attraction_id:)
       end
 
-      def self.find_all()
+      def self.find_all
         ratings = Database::AttractionMbtiRatingOrm.all
         rebuild_many_entities(ratings)
       end
