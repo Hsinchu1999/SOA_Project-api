@@ -7,7 +7,6 @@ module TravellingSuggestions
   module HsinChuCityGovernment
     # Object for accessing HCCG api
     class HCCGApi
-
       def attractions(page, size)
         call_hccg_url(page, size).parse
       end

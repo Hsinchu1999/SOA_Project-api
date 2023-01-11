@@ -26,7 +26,7 @@ module TravellingSuggestions
       # property :best_time_to_visit
 
       link :self do
-       "#{App.config.API_HOST}/recommendation/attraction&attraction_id=#{id}"
+        "#{App.config.API_HOST}/recommendation/attraction&attraction_id=#{id}"
       end
 
       private

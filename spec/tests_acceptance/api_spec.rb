@@ -66,7 +66,6 @@ describe 'Test API routes' do
     end
   end
 
-
   describe 'mbti_test/result' do
     it 'HAPPY: should calculate correct result' do
       VALID_MBTI_QUESTION_PAIR.each_with_index do |question_pair, index|
@@ -157,7 +156,7 @@ describe 'Test API routes' do
     it 'HAPPY: should give attraction set' do
       VALID_MBTI_TYPES_CAP.each do |mbti|
         VALID_ATTRACTION_SET_SIZE.each do |set_size|
-          get "/api/v1/recommendation/attraction_set?set_size=#{set_size.to_s}&mbti=#{mbti.to_s}"
+          get "/api/v1/recommendation/attraction_set?set_size=#{set_size}&mbti=#{mbti}"
           _(last_response.status).must_equal 200
 
           attraction_set = JSON.parse(last_response.body)
@@ -171,7 +170,7 @@ describe 'Test API routes' do
     it 'SAD: should reject incorrect attraction set size' do
       VALID_MBTI_TYPES_CAP.each do |mbti|
         INVALID_ATTRACTION_SET_SIZE_POS.each do |set_size|
-          get "/api/v1/recommendation/attraction_set?set_size=#{set_size.to_s}&mbti=#{mbti.to_s}"
+          get "/api/v1/recommendation/attraction_set?set_size=#{set_size}&mbti=#{mbti}"
 
           _(last_response.status).must_equal 400
         end
@@ -179,7 +178,7 @@ describe 'Test API routes' do
 
       VALID_MBTI_TYPES_CAP.each do |mbti|
         INVALID_ATTRACTION_SET_SIZE_NEG.each do |set_size|
-          get "/api/v1/recommendation/attraction_set?set_size=#{set_size.to_s}&mbti=#{mbti.to_s}"
+          get "/api/v1/recommendation/attraction_set?set_size=#{set_size}&mbti=#{mbti}"
 
           _(last_response.status).must_equal 400
         end
@@ -189,7 +188,7 @@ describe 'Test API routes' do
     it 'SAD: should reject incorrect mbti' do
       INVALID_MBTI_TYPES_CAP.each do |mbti|
         VALID_ATTRACTION_SET_SIZE.each do |set_size|
-          get "/api/v1/recommendation/attraction_set?set_size=#{set_size.to_s}&mbti=#{mbti.to_s}"
+          get "/api/v1/recommendation/attraction_set?set_size=#{set_size}&mbti=#{mbti}"
 
           _(last_response.status).must_equal 500
         end
@@ -200,14 +199,14 @@ describe 'Test API routes' do
   describe 'recommendation/attraction' do
     it 'HAPPY: should able to return attraction' do
       VALID_ATTRACTION_ID.each do |attraction_id|
-        get "/api/v1/recommendation/attraction?attraction_id=#{attraction_id.to_s}"
+        get "/api/v1/recommendation/attraction?attraction_id=#{attraction_id}"
         _(last_response.status).must_equal 200
       end
     end
 
     it 'SAD: should able to reject invalid attraction id' do
       INVALID_MBTI_QUESTION_PAIR.each do |attraction_id|
-        get "/api/v1/recommendation/attraction?attraction_id=#{attraction_id.to_s}"
+        get "/api/v1/recommendation/attraction?attraction_id=#{attraction_id}"
         _(last_response.status).must_equal 400
       end
     end
@@ -223,7 +222,7 @@ describe 'Test API routes' do
 
     it 'HAPPY: should successfully update' do
       VALID_ATTRACTION_SET.each do |attraction_set|
-        VALID_NICKNAMES.each do |nickname|
+        VALID_NICKNAMES.each do |_nickname|
           get "/api/v1/recommendation/result?nickname=peter_chen&#{attraction_set[0]}=like&#{attraction_set[1]}=dislike&#{attraction_set[2]}=like"
         end
       end
@@ -237,13 +236,12 @@ describe 'Test API routes' do
         end
       end
     end
-
   end
 
   describe 'model/update' do
     it 'HAPPY: should calculate correct result' do
-      VALID_MBTI_QUESTION_PAIR.each_with_index do |question_pair, index|
-        get "/api/v1/model/update?attraction_id=1&estj_like=1&estj_dislike=1&entj_like=2&entj_dislike=2&esfj_like=3&esfj_dislike=3&enfj_like=4&enfj_dislike=4&istj_like=5&istj_dislike=5&isfj_like=6&isfj_dislike=6&intj_like=7&intj_dislike=7&infj_like=8&infj_dislike=8&estp_like=9&estp_dislike=9&esfp_like=1&esfp_dislike=1&entp_like=2&entp_dislike=2&enfp_like=3&enfp_dislike=3&istp_like=4&istp_dislike=4&isfp_like=5&isfp_dislike=5&intp_like=6&intp_dislike=6&infp_like=7&infp_dislike=7"
+      VALID_MBTI_QUESTION_PAIR.each_with_index do |_question_pair, _index|
+        get '/api/v1/model/update?attraction_id=1&estj_like=1&estj_dislike=1&entj_like=2&entj_dislike=2&esfj_like=3&esfj_dislike=3&enfj_like=4&enfj_dislike=4&istj_like=5&istj_dislike=5&isfj_like=6&isfj_dislike=6&intj_like=7&intj_dislike=7&infj_like=8&infj_dislike=8&estp_like=9&estp_dislike=9&esfp_like=1&esfp_dislike=1&entp_like=2&entp_dislike=2&enfp_like=3&enfp_dislike=3&istp_like=4&istp_dislike=4&isfp_like=5&isfp_dislike=5&intp_like=6&intp_dislike=6&infp_like=7&infp_dislike=7'
         _(last_response.status).must_equal 200
       end
     end
@@ -257,7 +255,6 @@ describe 'Test API routes' do
       end
     end
   end
-
 end
 
 describe 'Integration Tests of CWB API and Database' do
