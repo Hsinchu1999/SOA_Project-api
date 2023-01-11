@@ -1,9 +1,10 @@
-require_relative '../require_app.rb'
+# frozen_string_literal: true
+
+require_relative '../require_app'
 require_app
 
 require 'figaro'
 require 'shoryuken'
-
 
 # TSP worker class to solve TSP problems in background
 class TSPWorker
@@ -14,11 +15,11 @@ class TSPWorker
   Figaro.load
   def self.config = Figaro.env
 
-    Shoryuken.sqs_client = Aws::SQS::Client.new(
-      access_key_id: config.AWS_ACCESS_KEY_ID,
-      secret_access_key: config.AWS_SECRET_ACCESS_KEY,
-      region: config.AWS_REGION
-    )
+  Shoryuken.sqs_client = Aws::SQS::Client.new(
+    access_key_id: config.AWS_ACCESS_KEY_ID,
+    secret_access_key: config.AWS_SECRET_ACCESS_KEY,
+    region: config.AWS_REGION
+  )
 
   include Shoryuken::Worker
   shoryuken_options queue: config.TSP_QUEUE_URL, auto_delete: true
@@ -26,8 +27,7 @@ class TSPWorker
   def perform(_sqs_msg, request)
     puts 'in TSPWorker.perform'
     puts request
-  rescue
+  rescue StandardError
     puts 'something went wrong'
   end
-
 end

@@ -6,15 +6,14 @@ require 'yaml'
 config = YAML.safe_load(File.read('config/secrets.yml'))
 
 def generate_url_path(functionality, config)
-    'https://opendata.cwb.gov.tw/api/v1/rest/datastore/' + functionality + '?Authorization=' + config['test']['CWB_TOKEN']
+  "https://opendata.cwb.gov.tw/api/v1/rest/datastore/#{functionality}?Authorization=#{config['test']['CWB_TOKEN']}"
 end
 
 def call_cwb_api(url)
-    HTTP.get(url)
+  HTTP.get(url)
 end
 
 cwb_response = {}
-
 
 url_36 = generate_url_path('F-C0032-001', config)
 cwb_response[url_36] = call_cwb_api(url_36)

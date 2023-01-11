@@ -11,7 +11,6 @@ module TravellingSuggestions
       def call(input)
         # puts "In Service::UpdateMode.create_attraction_mbti_rating"
         # puts "input=#{input}"
-        
 
         attraction_id = input['attraction_id'].to_i
         # puts "attraction_id=#{attraction_id}"
@@ -50,14 +49,14 @@ module TravellingSuggestions
 
         puts "infp_seen=#{infp_seen}"
         attraction_mbti_rating = Repository::ForAttraction
-            .klass(Entity::AttractionMbtiRating)
-            .find_attraction_id(attraction_id)
-        
+                                 .klass(Entity::AttractionMbtiRating)
+                                 .find_attraction_id(attraction_id)
+
         puts "attraction_mbti_rating=#{attraction_mbti_rating}"
 
         attraction_mbti_rating_orm = Repository::ForAttraction
-            .klass(Entity::AttractionMbtiRating)
-            .db_find_or_create(attraction_mbti_rating)
+                                     .klass(Entity::AttractionMbtiRating)
+                                     .db_find_or_create(attraction_mbti_rating)
 
         puts "attraction_mbti_rating_orm=#{attraction_mbti_rating_orm}"
 
@@ -93,13 +92,13 @@ module TravellingSuggestions
         attraction_mbti_rating_orm.update(INTP_seen: intp_seen)
         attraction_mbti_rating_orm.update(INFP_like: infp_like)
         attraction_mbti_rating_orm.update(INFP_seen: infp_seen)
-        
+
         Success(
-            Response::ApiResult.new(
-              status: :ok,
-              message: 'Success'
-            )
+          Response::ApiResult.new(
+            status: :ok,
+            message: 'Success'
           )
+        )
       rescue StandardError
         Failure(
           Response::ApiResult.new(

@@ -14,12 +14,18 @@ Rake::TestTask.new(:spec) do |t|
   t.warning = false
 end
 
+desc 'Run env test'
+task :env_test do
+  require_relative 'config/environment'
+  puts ENV['DATABASE_URL']
+  puts "ENV['CWB_TOKEN']=#{ENV['CWB_TOKEN']}"
+end
+
 desc 'reboot db'
 task :reboot_db do
-  Rake::Task["setup_mbti"].execute
-  Rake::Task["setup_attraction"].execute
-  Rake::Task["setup_attraction"].execute
-  Rake::Task["setup_attr_ratings"].execute
+  Rake::Task['setup_mbti'].execute
+  Rake::Task['setup_attraction'].execute
+  Rake::Task['setup_attr_ratings'].execute
 end
 
 desc 'update weather'
@@ -37,11 +43,13 @@ desc 'setup attractions'
 task :setup_attraction do
   require_relative 'config/environment'
   require_app
-  CONFIG = YAML.safe_load(File.read('config/secrets.yml'))
-  CWB_TOKEN = CONFIG['test']['CWB_TOKEN']
+  # CONFIG = YAML.safe_load(File.read('config/secrets.yml'))
+  # CWB_TOKEN = CONFIG['test']['CWB_TOKEN']
+  # puts 'In setup_attraction'
+  # puts "ENV=#{ENV}"
   CITY = '新北市'
   NTPCAPI = TravellingSuggestions::NewTaiPeiCityGovernment::NTPCApi
-  region = TravellingSuggestions::Mapper::RegionMapper.new('Taiwan', CITY).find_weather(CWB_TOKEN)
+  region = TravellingSuggestions::Mapper::RegionMapper.new('Taiwan', CITY).find_weather(ENV['CWB_TOKEN'])
   rebuilt_region = TravellingSuggestions::Repository::Regions.db_find_or_create(region)
   attractions = TravellingSuggestions::Mapper::AttractionNTPCMapper.new(NTPCAPI, region).find(0, 100)
   attractions.each do |attraction|
@@ -57,7 +65,7 @@ task :setup_attr_ratings do
   attraction_ids.each do |attraction_id|
     rating_entity = TravellingSuggestions::Entity::AttractionMbtiRating.new(
       id: nil,
-      attraction_id: attraction_id,
+      attraction_id:,
       ESTJ_like: 1,
       ESTJ_seen: 1,
       ENTJ_like: 1,
@@ -205,7 +213,7 @@ namespace :cache do
     end
 
     desc 'Lists production cache'
-    task :production => :config do
+    task production: :config do
       puts 'Finding production cache'
       keys = TravellingSuggestions::Cache::Client.new(@api.config).keys
       puts 'No keys found' if keys.none?
@@ -221,7 +229,7 @@ namespace :cache do
     end
 
     desc 'Delete production cache'
-    task :production => :config do
+    task production: :config do
       print 'Are you sure you wish to wipe the production cache? (y/n) '
       if $stdin.gets.chomp.downcase == 'y'
         puts 'Deleting production cache'

@@ -19,11 +19,11 @@ module TravellingSuggestions
         if (user = Repository::ForUser.klass(Entity::User).find_name(post_params['nickname']))
           post_params.delete('nickname')
           Success(
-              Response::ApiResult.new(
-                status: :ok,
-                message: [user, post_params]
-              )
+            Response::ApiResult.new(
+              status: :ok,
+              message: [user, post_params]
             )
+          )
         else
           Failure(
             Response::ApiResult.new(
@@ -44,6 +44,7 @@ module TravellingSuggestions
         attractions_new_like_ids = []
         post_params.each do |key, value|
           next unless value == 'like'
+
           # puts key
           # puts key.class
           attraction = Repository::ForAttraction.klass(Entity::Attraction).find_id(key.to_i)
@@ -61,7 +62,7 @@ module TravellingSuggestions
             attractions_new_like_ids.append(key.to_i)
             user_db.add_favorite_attraction(Repository::Attractions.db_find(attraction))
           end
-          #fav_attraction_orms = Repository::UsersFavorites.db_find_or_create(user.favorite_attractions)
+          # fav_attraction_orms = Repository::UsersFavorites.db_find_or_create(user.favorite_attractions)
           # actually creates
         end
 

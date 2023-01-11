@@ -7,7 +7,6 @@ module TravellingSuggestions
   module NewTaiPeiCityGovernment
     # Object for accessing HCCG api
     class NTPCApi
-
       def attractions(page, size)
         call_ntpc_url(page, size).parse
       end
@@ -17,7 +16,7 @@ module TravellingSuggestions
       def call_ntpc_url(page, size)
         result =
           HTTP.get("https://data.ntpc.gov.tw/api/datasets/b3a30a19-4b89-4da2-8d99-18200dc5dfde/json?page=#{page}&size=#{size}")
-        
+
         Response.new(result).tap do |response|
           raise(response.error) unless response.successful?
         end

@@ -10,11 +10,11 @@ gem 'roar'
 # Web Application
 gem 'figaro', '~> 1.2'
 gem 'puma', '~> 5'
-gem 'rack-session', '~> 0.3'
-gem 'roda', '~> 3'
-gem 'redis'
 gem 'rack-cache'
+gem 'rack-session', '~> 0.3'
+gem 'redis'
 gem 'redis-rack-cache'
+gem 'roda', '~> 3'
 
 gem 'rake'
 

@@ -32,13 +32,13 @@ module TravellingSuggestions
       def pick_set(input)
         recommender = input[0]
         k = input[1]
-        puts "In pick_set"
+        puts 'In pick_set'
         puts "k=#{k}"
         attractions = recommender.mbti_top_k(k)
         Success(
           Response::ApiResult.new(
             status: :ok,
-            message: attractions.map { |attraction| attraction.attraction_id }
+            message: attractions.map(&:attraction_id)
           )
         )
       rescue StandardError

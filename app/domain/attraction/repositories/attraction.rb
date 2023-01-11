@@ -40,6 +40,7 @@ module TravellingSuggestions
         db_region = Database::RegionOrm.find_or_create(entity.in_region.to_attr_hash)
         db_attraction.update(in_region_id: db_region.id)
       end
+
       def self.db_find(entity)
         Database::AttractionOrm.find(id: entity.id)
       end
