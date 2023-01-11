@@ -5,7 +5,6 @@ require 'webmock'
 
 # Setting up VCR
 module VcrHelper
-
   def self.setup_vcr
     VCR.configure do |c|
       c.cassette_library_dir = CASSETTE_FOLDER_CWB

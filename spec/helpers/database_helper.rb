@@ -20,6 +20,7 @@ module DatabaseHelper
     TravellingSuggestions::Database::UserActiveRatingOrm.map(&:destroy)
     TravellingSuggestions::App.DB.run('PRAGMA foreign_keys = ON')
   end
+
   def self.wipe_weather
     TravellingSuggestions::App.DB.run('PRAGMA foreign_keys = OFF')
     TravellingSuggestions::Database::ForecastOneWeekOrm.map(&:destroy)

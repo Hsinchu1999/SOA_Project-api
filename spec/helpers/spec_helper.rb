@@ -26,24 +26,20 @@ INVALID_MBTI_QUESTION_PAIR = ['0=A&1=A&2=A&3=A', '99=A&1=A&3=A&4=A'].freeze
 VALID_MBTI_QUESTION_SET_SIZE = (1..11).to_a
 INVALID_MBTI_QUESTION_SET_SIZE = ['a', '-1', '99', '12', '0'].freeze
 
-VALID_MBTI_TYPES = ["estj",
-  "entj", "esfj", "enfj", "istj",
-  "isfj", "intj", "infj", "estp",
-  "esfp", "entp", "enfp", "istp",
-  "isfp", "intp", "infp"].freeze
+VALID_MBTI_TYPES = %w[estj
+                      entj esfj enfj istj
+                      isfj intj infj estp
+                      esfp entp enfp istp
+                      isfp intp infp].freeze
 
-INVALID_MBTI_TYPES = [
-  "abcd",
-  "efgh"
-]
+INVALID_MBTI_TYPES = %w[
+  abcd
+  efgh
+].freeze
 
-VALID_MBTI_TYPES_CAP = VALID_MBTI_TYPES.map do |mbti|
-  mbti.upcase
-end
+VALID_MBTI_TYPES_CAP = VALID_MBTI_TYPES.map(&:upcase)
 
-INVALID_MBTI_TYPES_CAP = INVALID_MBTI_TYPES.map do |mbti|
-  mbti.upcase
-end
+INVALID_MBTI_TYPES_CAP = INVALID_MBTI_TYPES.map(&:upcase)
 
 VALID_ATTRACTION_SET_SIZE = Array(1..10)
 
