@@ -19,11 +19,11 @@ module TravellingSuggestions
         if (user = Repository::ForUser.klass(Entity::User).find_name(post_params['nickname']))
           post_params.delete('nickname')
           Success(
-              Response::ApiResult.new(
-                status: :ok,
-                message: [user, post_params, keep_ids]
-              )
+            Response::ApiResult.new(
+              status: :ok,
+              message: [user, post_params, keep_ids]
             )
+          )
         else
           Failure(
             Response::ApiResult.new(
@@ -42,7 +42,8 @@ module TravellingSuggestions
 
         post_params.each do |key, value|
           next unless keep_ids.include? key.to_i
-          message = "{\"mbti\":\"#{user.mbti}\", \"attraction_id\":#{key.to_s}, \"preference\":\"#{value}\"}"
+
+          message = "{\"mbti\":\"#{user.mbti}\", \"attraction_id\":#{key}, \"preference\":\"#{value}\"}"
           queue = TravellingSuggestions::Messaging::Queue.new(App.config.TSP_QUEUE_URL, App.config)
           res = queue.send(message)
         end

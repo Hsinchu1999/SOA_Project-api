@@ -23,7 +23,7 @@ module TravellingSuggestions
       attribute :best_time_to_visit,    Strict::String.optional
 
       def to_attr_hash
-        to_hash.except(:id,:in_region)
+        to_hash.except(:id, :in_region)
       end
     end
   end
