@@ -10,10 +10,6 @@ module TravellingSuggestions
 
       step :setup_sets
       step :pick_set
-
-      private
-
-      
     end
   end
 end

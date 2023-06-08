@@ -26,37 +26,20 @@ INVALID_MBTI_QUESTION_PAIR = ['0=A&1=A&2=A&3=A', '99=A&1=A&3=A&4=A'].freeze
 VALID_MBTI_QUESTION_SET_SIZE = (1..11).to_a
 INVALID_MBTI_QUESTION_SET_SIZE = ['a', '-1', '99', '12', '0'].freeze
 
-VALID_MBTI_TYPES = [
-  "estj",
-  "entj",
-  "esfj",
-  "enfj",
-  "istj",
-  "isfj",
-  "intj",
-  "infj",
-  "estp",
-  "esfp",
-  "entp",
-  "enfp",
-  "istp",
-  "isfp",
-  "intp",
-  "infp"
+VALID_MBTI_TYPES = %w[estj
+                      entj esfj enfj istj
+                      isfj intj infj estp
+                      esfp entp enfp istp
+                      isfp intp infp].freeze
+
+INVALID_MBTI_TYPES = %w[
+  abcd
+  efgh
 ].freeze
 
-INVALID_MBTI_TYPES = [
-  "abcd",
-  "efgh"
-]
+VALID_MBTI_TYPES_CAP = VALID_MBTI_TYPES.map(&:upcase)
 
-VALID_MBTI_TYPES_CAP = VALID_MBTI_TYPES.map do |mbti|
-  mbti.upcase
-end
-
-INVALID_MBTI_TYPES_CAP = INVALID_MBTI_TYPES.map do |mbti|
-  mbti.upcase
-end
+INVALID_MBTI_TYPES_CAP = INVALID_MBTI_TYPES.map(&:upcase)
 
 VALID_ATTRACTION_SET_SIZE = Array(1..10)
 
@@ -69,5 +52,22 @@ INVALID_ATTRACTION_ID = Array(-10..-1)
 VALID_ATTRACTION_SET = VALID_ATTRACTION_ID.each_slice(3).to_a
 puts "VALID_ATTRACTION_SET=#{VALID_ATTRACTION_SET}"
 
-CASSETTE_FOLDER = 'spec/fixtures/cassettes'
-CASSETTE_FILE = 'web_api'
+CASSETTE_FOLDER_CWB = 'spec/fixtures/cassettes'
+CASSETTE_FILE_CWB = 'cwb_api'
+
+LOCATION = '新竹縣'
+CITY = '新北市'
+CWB_TOKEN = ENV['CWB_TOKEN']
+YML_FILE = YAML.safe_load(File.read('spec/fixtures/cwb_results.yml'))
+CORRECTLOCATION = YML_FILE.select { |data| data['locationName'] == LOCATION }
+CORRECTPOP = CORRECTLOCATION[0]['weatherElement'].select do |data|
+  data['elementName'] == 'PoP'
+end[0]['time'][0]['parameter']['parameterName'].to_i
+CORRECTMINT = CORRECTLOCATION[0]['weatherElement'].select do |data|
+  data['elementName'] == 'MinT'
+end[0]['time'][0]['parameter']['parameterName'].to_i
+CORRECTMAXT = CORRECTLOCATION[0]['weatherElement'].select do |data|
+  data['elementName'] == 'MaxT'
+end[0]['time'][0]['parameter']['parameterName'].to_i
+UNAUTHORIZED = TravellingSuggestions::CWB::CWBApi::Response::Errors::Unauthorized
+NTPCAPI = TravellingSuggestions::NewTaiPeiCityGovernment::NTPCApi

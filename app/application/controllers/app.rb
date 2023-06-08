@@ -265,7 +265,7 @@ module TravellingSuggestions
                 # GET attraction result from user like/dislike
                 params = routing.params
                 result = Request::EncodedCalculateAttraction.new(params).call
-                
+
                 # Check result submit validity
                 if result.failure?
                   failed = Representer::HTTPResponse.new(result.failure)
@@ -302,7 +302,7 @@ module TravellingSuggestions
                 routing_params = routing.params
                 # puts "routing_params=#{routing_params}"
                 result = Service::UpdateModel.new.call(routing_params)
-                
+
                 if result.failure?
                   failed = Representer::HTTPResponse.new(result.failure)
                   routing.halt failed.http_status_code, failed.to_json
@@ -310,7 +310,7 @@ module TravellingSuggestions
 
                 http_response = Representer::HTTPResponse.new(result.value!)
                 response.status = http_response.http_status_code
-                "{\"Success\":\"Success\"}"
+                '{"Success":"Success"}'
               end
             end
             routing.is 'attraction' do
@@ -328,7 +328,6 @@ module TravellingSuggestions
                 http_response = Representer::HTTPResponse.new(result.value!)
                 response.status = http_response.http_status_code
                 Representer::AttractionMbtiRating.new(result.value!.message).to_json
-
               end
             end
           end
